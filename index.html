@@ -1,6 +1,6 @@
 <!doctype html>
 <!--
-  宫词 · 故宫英文导游词记忆站 V2
+  宫词 · 故宫英文导游词记忆站 V3
   Discovery:
     deliverable: 单文件静态学习站（Web 类 · desktop-first，移动端适配）
     audience: 备考北京市初级导游资格考试（英语现场讲解）的考生
@@ -8,7 +8,7 @@
     sections: 顶栏(模式切换+进度) / 纵览(中轴地图+路线列表+站点详情) / 背诵(遮罩+朗读+录音) / 页脚(来源与说明)
     accent: 宫墙红（导航与关键操作），琉璃金（装饰线索），无渐变
   内容依据：《北京导游服务能力——北京现场导游考试教材》（中英对照讲解）与用户校对稿整理。
-  图片：Wikimedia Commons（V2：CDN 直连缩略图 + Special:FilePath 二级回退 + 预连接）；新增 iPad 断点与触控目标优化。
+  图片：Wikimedia Commons（V2：CDN 直连缩略图 + Special:FilePath 二级回退 + 预连接）；V3：修复 iPad 竖屏背诵区溢出（整页横滚→模块内滚动），重排竖屏背诵导航与工具栏。
 -->
 <html lang="zh-CN">
 <head>
@@ -71,9 +71,9 @@
   --ease:cubic-bezier(.2,0,0,1);
 }
 *,*::before,*::after{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
+html{-webkit-text-size-adjust:100%;overflow-x:clip}
 body{
-  margin:0;background:var(--bg);color:var(--ink);
+  margin:0;background:var(--bg);color:var(--ink);overflow-x:clip;
   font-family:var(--font-body);font-size:var(--fs-body);line-height:1.6;
   -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
 }
@@ -132,7 +132,8 @@ p{margin:0}
 }
 
 /* ---------- 主区布局 ---------- */
-.main{max-width:1360px;margin:0 auto;padding:26px 24px 64px}
+.main{max-width:1360px;margin:0 auto;padding:26px 24px 64px;overflow-x:clip}
+.ov-grid>*,.rc-grid>*,.rc-main>*,.rc-rail,.panel,.detail{min-width:0}
 .mode-view{display:none}
 .mode-view.on{display:block}
 
@@ -289,7 +290,7 @@ p{margin:0}
 .credits a{color:var(--gold);text-decoration:underline;text-underline-offset:2px}
 /* 空态 */
 .empty{
-  min-height:420px;display:grid;place-items:center;text-align:center;padding:40px;
+  min-height:300px;display:grid;place-items:center;text-align:center;padding:40px;
 }
 .empty-in{display:flex;flex-direction:column;align-items:center;gap:14px;max-width:34ch}
 .empty-in .big-seal{
@@ -310,11 +311,12 @@ p{margin:0}
   transition:background var(--motion) var(--ease),color var(--motion) var(--ease);
 }
 .seg button[aria-pressed="true"]{background:var(--surface);color:var(--accent);box-shadow:0 1px 0 var(--border)}
-.rc-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.rc-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;row-gap:8px;min-width:0}
 .rc-row label{font-size:12.5px;color:var(--muted);white-space:nowrap}
 .rc-row select{
   font:inherit;font-size:13px;color:var(--ink);background:var(--surface);
-  border:1px solid var(--border);border-radius:8px;padding:6px 8px;max-width:210px;
+  border:1px solid var(--border);border-radius:8px;padding:6px 8px;
+  flex:1 1 150px;min-width:0;max-width:260px;
 }
 .rc-row input[type="range"]{accent-color:var(--accent);flex:1;min-width:110px}
 .rc-row .val{font-family:var(--font-mono);font-size:12px;color:var(--muted);min-width:34px;text-align:right}
@@ -430,7 +432,12 @@ p{margin:0}
   .rc-rail{position:static}
 }
 @media (max-width:767px){
-  .main{padding:18px 14px 56px}
+  .main{padding:18px 14px 56px;overflow-x:clip}
+  #reciteStops{display:flex;overflow-x:auto;overflow-y:hidden;gap:8px;padding:10px;min-width:0;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+  #reciteStops li{flex:0 0 auto}
+  #reciteStops li + li{margin-top:0}
+  #reciteStops .stop-row{width:max-content;grid-template-columns:auto auto auto;gap:8px;padding:10px 12px}
+  #reciteStops .stop-row .nm span{max-width:130px}
   .ov-grid{grid-template-columns:1fr;gap:16px}
   .map-card{position:static}
   .ov-list{display:block}
@@ -442,17 +449,19 @@ p{margin:0}
   .para-tools{position:static;margin-top:8px}
   .d-photo{aspect-ratio:16/10}
 }
-/* iPad 竖屏（768–1023）：地图与列表并排，详情全宽 */
+/* iPad 竖屏（768–1023）：地图与列表并排，详情全宽；背诵导航与工具栏单列自适应 */
 @media (min-width:768px) and (max-width:1023px){
   .ov-grid{grid-template-columns:minmax(0,6fr) minmax(0,5fr)}
   .map-card{position:static}
   .ov-list{display:block}
   .detail{grid-column:1 / -1}
-  #reciteStops{display:flex;overflow-x:auto;gap:8px;padding:10px;-webkit-overflow-scrolling:touch}
+  .rc-rail{display:flex;flex-direction:column;gap:14px}
+  .rc-toolbar{padding:14px 16px}
+  #reciteStops{display:flex;overflow-x:auto;overflow-y:hidden;gap:8px;padding:10px;min-width:0;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
   #reciteStops li{flex:0 0 auto}
   #reciteStops li + li{margin-top:0}
-  #reciteStops .stop-row{width:max-content;grid-template-columns:auto auto;gap:8px}
-  #reciteStops .stop-row .nm span{max-width:150px}
+  #reciteStops .stop-row{width:max-content;grid-template-columns:auto auto auto;gap:8px;padding:10px 12px}
+  #reciteStops .stop-row .nm span{max-width:140px}
 }
 /* 触控设备（iPad / 手机）：加大可点区域 */
 @media (pointer:coarse){
