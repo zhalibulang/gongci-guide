@@ -1,0 +1,1324 @@
+<!doctype html>
+<!--
+  宫词 · 故宫英文导游词记忆站 V2
+  Discovery:
+    deliverable: 单文件静态学习站（Web 类 · desktop-first，移动端适配）
+    audience: 备考北京市初级导游资格考试（英语现场讲解）的考生
+    direction: 宫廷庄重 × 现代编辑（宫墙红 / 琉璃金 / 宣纸底，衬线大标题）
+    sections: 顶栏(模式切换+进度) / 纵览(中轴地图+路线列表+站点详情) / 背诵(遮罩+朗读+录音) / 页脚(来源与说明)
+    accent: 宫墙红（导航与关键操作），琉璃金（装饰线索），无渐变
+  内容依据：《北京导游服务能力——北京现场导游考试教材》（中英对照讲解）与用户校对稿整理。
+  图片：Wikimedia Commons（V2：CDN 直连缩略图 + Special:FilePath 二级回退 + 预连接）；新增 iPad 断点与触控目标优化。
+-->
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>宫词 · 故宫英文导游词记忆站</title>
+<link rel="preconnect" href="https://upload.wikimedia.org" crossorigin>
+<link rel="dns-prefetch" href="https://upload.wikimedia.org">
+<script id="auto-designer-preview-contract" type="application/json">
+{
+  "artifactRole": "web-page",
+  "authoringViewport": { "width": 1440, "height": 900 },
+  "deviceAdaptation": { "enabled": true, "strategy": "responsive", "supportedDevices": ["desktop", "tablet", "mobile"] },
+  "breakpoints": { "mobileMax": 767, "tabletMin": 768, "tabletMax": 1023, "desktopMin": 1024 },
+  "defaultDevice": "canvas"
+}
+</script>
+<style>
+:root{
+  --bg:#f5f0e6;
+  --surface:#fdfaf2;
+  --surface-deep:#f0e8d7;
+  --ink:#282218;
+  --muted:#776a58;
+  --border:#e0d5bf;
+  --border-strong:#c9b98f;
+  --accent:#9c2b22;
+  --accent-deep:#7c211a;
+  --accent-soft:color-mix(in srgb, #9c2b22 9%, transparent);
+  --gold:#9c7a2e;
+  --gold-soft:color-mix(in srgb, #9c7a2e 12%, transparent);
+  --ok:#2e6e46;
+  --ok-soft:color-mix(in srgb, #2e6e46 10%, transparent);
+  --warn:#a05c1f;
+  --danger:#a3341f;
+  --stone:#3e3a31;
+  --paper:var(--paper);
+  --map-wall:#efe3c8; --map-wall-line:#b89b62;
+  --map-moat:#d9e7e6; --map-moat-line:#b3cdd0;
+  --map-hall:#b0543a; --map-hall-line:#7c3524;
+  --map-hall2:#c98d6b; --map-hall2-line:#8f4a30;
+  --map-ctx:#d8c9a8; --map-ctx-line:#b8a67d;
+  --map-water:#cfe0e2; --map-water-line:#a9c4c8;
+  --map-road:#c4b184;
+  --map-garden:#c8d2a8; --map-garden-line:#9aa66f;
+  --map-lbl:#8a7a5f;
+  --map-terrace:#e6d5b2;
+  --font-display:"Songti SC","STSongti-SC","STSong","SimSun","Noto Serif SC",Georgia,serif;
+  --font-script:"Iowan Old Style","Palatino","Charter",Georgia,"Times New Roman",serif;
+  --font-body:-apple-system,BlinkMacSystemFont,"PingFang SC","Segoe UI",system-ui,sans-serif;
+  --font-mono:ui-monospace,"SF Mono",Menlo,Monaco,Consolas,monospace;
+  --fs-h1:clamp(26px,3vw,34px);
+  --fs-h2:clamp(20px,2.2vw,24px);
+  --fs-body:16px;
+  --fs-meta:13px;
+  --radius:10px;
+  --radius-lg:16px;
+  --ring:0 0 0 3px color-mix(in srgb, #9c2b22 28%, transparent);
+  --motion:180ms;
+  --ease:cubic-bezier(.2,0,0,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:var(--font-body);font-size:var(--fs-body);line-height:1.6;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+}
+img,svg{display:block;max-width:100%}
+button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;padding:0}
+:focus{outline:none}
+:focus-visible{box-shadow:var(--ring);border-radius:6px}
+p{margin:0}
+.num{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+
+/* ---------- 顶栏 ---------- */
+.topbar{
+  position:sticky;top:0;z-index:40;
+  background:color-mix(in srgb, var(--bg) 90%, transparent);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--border);
+}
+.topbar-in{
+  max-width:1360px;margin:0 auto;padding:12px 24px;
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+}
+.brand{display:flex;align-items:center;gap:12px}
+.seal{
+  width:40px;height:40px;border-radius:8px;flex:none;
+  background:var(--accent);color:var(--paper);
+  font-family:var(--font-display);font-size:19px;font-weight:700;
+  display:grid;place-items:center;letter-spacing:.08em;line-height:1;
+  box-shadow:inset 0 0 0 2px color-mix(in srgb, var(--paper) 32%,transparent);
+}
+.brand-txt{display:flex;flex-direction:column;gap:1px}
+.brand-txt b{font-family:var(--font-display);font-size:19px;font-weight:700;letter-spacing:.02em}
+.brand-txt span{font-family:var(--font-mono);font-size:11px;letter-spacing:.09em;color:var(--muted)}
+.mode-switch{
+  margin-left:auto;display:flex;gap:4px;padding:4px;
+  background:var(--surface);border:1px solid var(--border);border-radius:999px;
+}
+.mode-switch button{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:7px 16px;border-radius:999px;font-size:14px;font-weight:600;color:var(--muted);
+  transition:background var(--motion) var(--ease),color var(--motion) var(--ease);
+}
+.mode-switch button:hover{color:var(--ink)}
+.mode-switch button[aria-pressed="true"]{background:var(--accent);color:var(--paper)}
+.mode-switch svg{width:15px;height:15px}
+.progress-chip{
+  display:flex;align-items:center;gap:8px;
+  font-family:var(--font-mono);font-size:12px;color:var(--muted);
+  border:1px solid var(--border);border-radius:999px;padding:7px 14px;background:var(--surface);
+}
+.progress-chip b{color:var(--accent);font-weight:600}
+@media (max-width:767px){
+  .topbar-in{padding:10px 14px;gap:10px}
+  .brand-txt span{display:none}
+  .progress-chip{margin-left:auto}
+  .mode-switch{order:3;width:100%;justify-content:center}
+}
+
+/* ---------- 主区布局 ---------- */
+.main{max-width:1360px;margin:0 auto;padding:26px 24px 64px}
+.mode-view{display:none}
+.mode-view.on{display:block}
+
+/* ---------- 纵览：三栏 ---------- */
+.ov-grid{
+  display:grid;grid-template-columns:minmax(340px,430px) minmax(270px,320px) minmax(0,1fr);
+  gap:22px;align-items:start;
+}
+.panel{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+}
+.panel-hd{
+  display:flex;align-items:baseline;justify-content:space-between;gap:10px;
+  padding:16px 20px 12px;border-bottom:1px solid var(--border);
+}
+.panel-hd h2{margin:0;font-family:var(--font-display);font-size:17px;font-weight:700;letter-spacing:.02em}
+.panel-hd .meta{font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;color:var(--muted)}
+.map-card{position:sticky;top:84px}
+.map-wrap{padding:14px 14px 10px}
+.map-wrap svg{width:100%;height:auto}
+.map-legend{
+  display:flex;gap:14px;flex-wrap:wrap;
+  padding:0 20px 14px;font-size:12px;color:var(--muted);
+}
+.lg{display:inline-flex;align-items:center;gap:6px}
+.lg i{width:10px;height:10px;border-radius:50%;display:inline-block}
+.lg .c0{background:var(--surface);border:2px solid var(--muted)}
+.lg .c1{background:var(--gold);border:2px solid var(--gold)}
+.lg .c2{background:var(--ok);border:2px solid var(--ok)}
+/* 地图图形 */
+.mp-wall{fill:var(--map-wall);stroke:var(--map-wall-line);stroke-width:2}
+.mp-moat{fill:var(--map-moat);stroke:var(--map-moat-line);stroke-width:1.5}
+.mp-hall{fill:var(--map-hall);stroke:var(--map-hall-line);stroke-width:1.5}
+.mp-hall-lite{fill:var(--map-hall2);stroke:var(--map-hall2-line);stroke-width:1.2}
+.mp-ctx{fill:var(--map-ctx);stroke:var(--map-ctx-line);stroke-width:1;opacity:.55}
+.mp-water{fill:var(--map-water);stroke:var(--map-water-line);stroke-width:1}
+.mp-road{stroke:var(--map-road);stroke-width:3;stroke-dasharray:1 7;stroke-linecap:round;fill:none}
+.mp-garden{fill:var(--map-garden);stroke:var(--map-garden-line);stroke-width:1.2;opacity:.8}
+.mp-lbl{font-family:var(--font-body);font-size:10px;fill:var(--map-lbl);letter-spacing:1px}
+.pin{cursor:pointer}
+.pin .pin-dot{
+  fill:var(--surface);stroke:var(--muted);stroke-width:2;
+  transition:stroke var(--motion) var(--ease),fill var(--motion) var(--ease);
+}
+.pin .pin-txt{
+  font-family:var(--font-mono);font-size:10.5px;fill:var(--ink);
+  text-anchor:middle;dominant-baseline:central;pointer-events:none;
+}
+.pin .pin-name{font-family:var(--font-body);font-size:11px;fill:var(--muted);text-anchor:middle;pointer-events:none}
+.pin:hover .pin-dot{stroke:var(--accent)}
+.pin[data-m="1"] .pin-dot{stroke:var(--gold);fill:color-mix(in srgb, var(--gold) 14%, var(--surface))}
+.pin[data-m="2"] .pin-dot{stroke:var(--ok);fill:color-mix(in srgb, var(--ok) 16%, var(--surface))}
+.pin.active .pin-dot{fill:var(--accent);stroke:var(--accent-deep)}
+.pin.active .pin-txt{fill:var(--paper)}
+.pin.active .pin-name{fill:var(--accent);font-weight:600}
+.pin:focus-visible{box-shadow:none}
+.pin:focus-visible .pin-dot{stroke:var(--accent);stroke-width:3.5}
+
+/* 路线列表 */
+.stop-list{list-style:none;margin:0;padding:8px}
+.stop-list li + li{margin-top:2px}
+.stop-row{
+  width:100%;display:grid;grid-template-columns:34px 1fr auto;gap:10px;align-items:center;
+  text-align:left;padding:10px 12px;border-radius:10px;
+  transition:background var(--motion) var(--ease);
+}
+.stop-row:hover{background:var(--surface-deep)}
+.stop-row .n{
+  font-family:var(--font-mono);font-size:12px;color:var(--muted);
+  width:30px;height:30px;border:1px solid var(--border);border-radius:8px;
+  display:grid;place-items:center;background:var(--bg);
+}
+.stop-row .nm{display:flex;flex-direction:column;gap:1px;min-width:0}
+.stop-row .nm b{font-size:14.5px;font-weight:600}
+.stop-row .nm span{
+  font-family:var(--font-script);font-size:12.5px;color:var(--muted);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.mchip{
+  font-size:11px;padding:3px 9px;border-radius:999px;letter-spacing:.03em;
+  border:1px solid var(--border);color:var(--muted);white-space:nowrap;
+}
+.mchip.m1{background:var(--gold-soft);border-color:color-mix(in srgb,var(--gold) 35%,transparent);color:var(--gold)}
+.mchip.m2{background:var(--ok-soft);border-color:color-mix(in srgb,var(--ok) 35%,transparent);color:var(--ok)}
+.stop-row[aria-current="true"]{background:var(--accent-soft)}
+.stop-row[aria-current="true"] .n{border-color:var(--accent);color:var(--accent)}
+
+/* 详情面板 */
+.detail{min-height:420px}
+.detail-body{padding:20px 22px 24px}
+.d-head{display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap}
+.d-photo{
+  width:100%;aspect-ratio:16/9;border-radius:12px;overflow:hidden;
+  background:var(--surface-deep);border:1px solid var(--border);position:relative;flex:none;
+}
+.d-photo img{width:100%;height:100%;object-fit:cover}
+.d-photo .ph-fallback{
+  position:absolute;inset:0;display:grid;place-items:center;gap:6px;
+  background:
+    radial-gradient(120% 90% at 30% 20%, color-mix(in srgb, var(--accent) 7%, transparent), transparent),
+    var(--surface-deep);
+  color:var(--muted);
+}
+.ph-fallback .ph-seal{
+  width:54px;height:54px;border:2px solid color-mix(in srgb,var(--accent) 45%,transparent);
+  border-radius:10px;display:grid;place-items:center;
+  font-family:var(--font-display);font-size:24px;color:color-mix(in srgb,var(--accent) 70%,var(--ink));
+}
+.ph-fallback p{font-size:12px;font-family:var(--font-mono);letter-spacing:.05em}
+.d-title{display:flex;flex-direction:column;gap:4px;margin-top:14px}
+.d-title h3{margin:0;font-family:var(--font-display);font-size:var(--fs-h1);font-weight:700;letter-spacing:.01em}
+.d-title .en{font-family:var(--font-script);font-size:19px;color:var(--accent);letter-spacing:.01em}
+.d-title .hook{color:var(--muted);font-size:14px;margin-top:2px}
+.d-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border-radius:10px;
+  font-size:14px;font-weight:600;border:1px solid var(--border);background:var(--surface);color:var(--ink);
+  transition:background var(--motion) var(--ease),border-color var(--motion) var(--ease),transform 60ms ease;
+}
+.btn:hover{border-color:var(--muted)}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+.btn.primary:hover{background:var(--accent-deep)}
+.btn svg{width:15px;height:15px}
+.facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.fact{
+  font-size:12.5px;padding:5px 11px;border-radius:8px;
+  background:var(--surface-deep);border:1px solid var(--border);color:var(--ink);
+}
+.fact b{font-family:var(--font-mono);color:var(--accent);font-weight:600}
+.d-sec{margin-top:26px}
+.d-sec > h4{
+  margin:0 0 10px;font-size:12px;font-family:var(--font-mono);
+  letter-spacing:.12em;color:var(--muted);text-transform:uppercase;
+}
+.para{display:flex;flex-direction:column;gap:8px;padding:14px 0;border-top:1px solid var(--border)}
+.para:first-child{border-top:0}
+.para .en{font-family:var(--font-script);font-size:17px;line-height:1.68;max-width:66ch}
+.para .cn{font-size:13.5px;color:var(--muted);line-height:1.75;max-width:66ch;border-left:2px solid var(--border);padding-left:12px}
+.para.speaking .en{color:var(--accent)}
+.qa details{border:1px solid var(--border);border-radius:10px;background:var(--bg);margin-top:8px}
+.qa summary{
+  cursor:pointer;padding:11px 14px;font-size:14px;font-weight:600;list-style:none;
+  display:flex;gap:10px;align-items:baseline;
+}
+.qa summary::-webkit-details-marker{display:none}
+.qa summary::before{content:"问";flex:none;font-size:11px;color:var(--paper);background:var(--gold);border-radius:6px;padding:2px 6px;font-family:var(--font-body)}
+.qa .a{padding:0 14px 12px 40px;font-size:14px;color:var(--muted);line-height:1.7}
+.artifact{margin-top:18px;border-radius:12px;overflow:hidden;border:1px solid var(--border)}
+.artifact svg{width:100%;height:auto;display:block}
+.artifact .cap{padding:10px 14px;font-size:12.5px;color:var(--muted);background:var(--stone);color:color-mix(in srgb, white 82%, var(--stone))}
+.credits{margin-top:20px;font-size:11.5px;color:var(--muted)}
+.credits a{color:var(--gold);text-decoration:underline;text-underline-offset:2px}
+/* 空态 */
+.empty{
+  min-height:420px;display:grid;place-items:center;text-align:center;padding:40px;
+}
+.empty-in{display:flex;flex-direction:column;align-items:center;gap:14px;max-width:34ch}
+.empty-in .big-seal{
+  width:64px;height:64px;border-radius:14px;background:var(--accent);
+  color:var(--paper);font-family:var(--font-display);font-size:30px;font-weight:700;
+  display:grid;place-items:center;box-shadow:inset 0 0 0 3px color-mix(in srgb, var(--paper) 30%,transparent);
+}
+.empty-in h3{margin:0;font-family:var(--font-display);font-size:21px}
+.empty-in p{color:var(--muted);font-size:14px}
+
+/* ---------- 背诵模式 ---------- */
+.rc-grid{display:grid;grid-template-columns:minmax(280px,330px) minmax(0,1fr);gap:22px;align-items:start}
+.rc-rail{position:sticky;top:84px;display:flex;flex-direction:column;gap:14px}
+.rc-toolbar{display:flex;flex-direction:column;gap:12px;padding:16px 18px}
+.seg{display:flex;gap:4px;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:4px}
+.seg button{
+  flex:1;padding:8px 6px;border-radius:8px;font-size:13.5px;font-weight:600;color:var(--muted);
+  transition:background var(--motion) var(--ease),color var(--motion) var(--ease);
+}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--accent);box-shadow:0 1px 0 var(--border)}
+.rc-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.rc-row label{font-size:12.5px;color:var(--muted);white-space:nowrap}
+.rc-row select{
+  font:inherit;font-size:13px;color:var(--ink);background:var(--surface);
+  border:1px solid var(--border);border-radius:8px;padding:6px 8px;max-width:210px;
+}
+.rc-row input[type="range"]{accent-color:var(--accent);flex:1;min-width:110px}
+.rc-row .val{font-family:var(--font-mono);font-size:12px;color:var(--muted);min-width:34px;text-align:right}
+.tts-note{font-size:12px;color:var(--warn);display:none}
+.tts-note.show{display:block}
+.mastery-btn{justify-content:center}
+.mastery-btn[data-m="2"]{background:var(--ok-soft);border-color:color-mix(in srgb,var(--ok) 40%,transparent);color:var(--ok)}
+.mastery-btn[data-m="1"]{background:var(--gold-soft);border-color:color-mix(in srgb,var(--gold) 40%,transparent);color:var(--gold)}
+
+/* 背诵正文 */
+.rc-main{display:flex;flex-direction:column;gap:18px}
+.rc-head{padding:18px 22px}
+.rc-head .top{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.rc-head h3{margin:0;font-family:var(--font-display);font-size:var(--fs-h2);font-weight:700}
+.rc-head .en{font-family:var(--font-script);font-size:17px;color:var(--accent)}
+.rc-head .sub{margin-top:6px;color:var(--muted);font-size:13.5px}
+.script{padding:4px 22px 20px}
+.script .para{position:relative;padding:16px 0 16px 56px}
+.script .para .pno{
+  position:absolute;left:0;top:18px;width:38px;height:38px;border-radius:10px;
+  border:1px solid var(--border);background:var(--bg);
+  font-family:var(--font-mono);font-size:12px;color:var(--muted);
+  display:grid;place-items:center;
+}
+.para-tools{position:absolute;right:0;top:14px;display:flex;gap:6px}
+.icon-btn{
+  width:32px;height:32px;border-radius:8px;border:1px solid var(--border);
+  display:grid;place-items:center;color:var(--muted);background:var(--surface);
+  transition:color var(--motion) var(--ease),border-color var(--motion) var(--ease);
+}
+.icon-btn:hover{color:var(--accent);border-color:var(--accent)}
+.icon-btn svg{width:15px;height:15px}
+.kw-mask{
+  display:inline-block;min-width:52px;text-align:center;
+  border-bottom:2px solid var(--gold);color:transparent;
+  background:var(--gold-soft);border-radius:4px;margin:0 2px;
+  cursor:pointer;user-select:none;line-height:1.35;
+  transition:background var(--motion) var(--ease);
+}
+.kw-mask::selection{background:transparent}
+.kw-mask.revealed{color:var(--accent);background:transparent;border-bottom-style:dotted;min-width:0}
+.para.hide-en .en-src{display:none}
+.para-hide-btn{
+  font-size:13px;font-weight:600;color:var(--accent);
+  border:1px dashed color-mix(in srgb,var(--accent) 40%,transparent);
+  border-radius:8px;padding:8px 14px;background:var(--accent-soft);
+}
+.para.hide-en .para-hide-btn{display:inline-block}
+.para-hide-btn{display:none}
+.para.hide-en .en{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+.para.hide-en .cn{margin-top:6px}
+.recite-empty{
+  padding:60px 30px;text-align:center;color:var(--muted);
+  display:flex;flex-direction:column;align-items:center;gap:12px;
+}
+
+/* 录音卡 */
+.rec-card{padding:18px 20px;display:flex;flex-direction:column;gap:12px}
+.rec-top{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.rec-btn{
+  display:inline-flex;align-items:center;gap:9px;padding:10px 18px;border-radius:10px;
+  font-weight:600;font-size:14px;border:1px solid var(--border);background:var(--surface);
+  transition:background var(--motion) var(--ease),color var(--motion) var(--ease),border-color var(--motion) var(--ease);
+}
+.rec-btn.recording{background:var(--danger);border-color:var(--danger);color:var(--paper)}
+.rec-btn svg{width:15px;height:15px}
+.rec-btn .dot{width:9px;height:9px;border-radius:50%;background:currentColor}
+.rec-time{font-family:var(--font-mono);font-size:13px;color:var(--muted);min-width:52px}
+.rec-hint{font-size:12.5px;color:var(--muted);max-width:56ch}
+.takes{display:flex;flex-direction:column;gap:8px}
+.take{
+  display:flex;align-items:center;gap:10px;padding:9px 12px;
+  border:1px solid var(--border);border-radius:10px;background:var(--bg);
+}
+.take .icon-btn{width:28px;height:28px}
+.take .t-name{font-size:13px;font-weight:600}
+.take .t-len{font-family:var(--font-mono);font-size:12px;color:var(--muted)}
+.take .del{margin-left:auto;color:var(--muted)}
+.take .del:hover{color:var(--danger);border-color:var(--danger)}
+.rec-error{
+  display:none;gap:10px;padding:12px 14px;border-radius:10px;
+  background:color-mix(in srgb,var(--danger) 7%,transparent);
+  border:1px solid color-mix(in srgb,var(--danger) 30%,transparent);
+  font-size:13px;color:var(--ink);line-height:1.6;
+}
+.rec-error.show{display:block}
+.rec-error b{color:var(--danger)}
+
+/* 通知条 */
+.toast{
+  position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(8px);
+  background:var(--stone);color:var(--paper);padding:10px 20px;border-radius:999px;
+  font-size:13.5px;opacity:0;pointer-events:none;z-index:60;
+  transition:opacity var(--motion) var(--ease),transform var(--motion) var(--ease);
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* 页脚 */
+.pagefoot{
+  border-top:1px solid var(--border);margin-top:30px;
+  padding:26px 24px 40px;color:var(--muted);font-size:12.5px;
+}
+.pagefoot-in{max-width:1360px;margin:0 auto;display:flex;gap:20px;flex-wrap:wrap;justify-content:space-between}
+.pagefoot a{color:var(--gold);text-decoration:underline;text-underline-offset:2px}
+
+/* ---------- 响应式 ---------- */
+@media (max-width:1180px){
+  .ov-grid{grid-template-columns:minmax(320px,400px) minmax(0,1fr)}
+  .ov-list{display:none}
+}
+@media (max-width:1023px){
+  .rc-grid{grid-template-columns:1fr}
+  .rc-rail{position:static}
+}
+@media (max-width:767px){
+  .main{padding:18px 14px 56px}
+  .ov-grid{grid-template-columns:1fr;gap:16px}
+  .map-card{position:static}
+  .ov-list{display:block}
+  .stop-list{display:grid;grid-template-columns:1fr 1fr;gap:2px}
+  .stop-row{grid-template-columns:30px 1fr auto;padding:9px 10px}
+  .detail{min-height:0}
+  .script .para{padding-left:0;padding-right:0}
+  .script .para .pno{position:static;margin-bottom:8px}
+  .para-tools{position:static;margin-top:8px}
+  .d-photo{aspect-ratio:16/10}
+}
+/* iPad 竖屏（768–1023）：地图与列表并排，详情全宽 */
+@media (min-width:768px) and (max-width:1023px){
+  .ov-grid{grid-template-columns:minmax(0,6fr) minmax(0,5fr)}
+  .map-card{position:static}
+  .ov-list{display:block}
+  .detail{grid-column:1 / -1}
+  #reciteStops{display:flex;overflow-x:auto;gap:8px;padding:10px;-webkit-overflow-scrolling:touch}
+  #reciteStops li{flex:0 0 auto}
+  #reciteStops li + li{margin-top:0}
+  #reciteStops .stop-row{width:max-content;grid-template-columns:auto auto;gap:8px}
+  #reciteStops .stop-row .nm span{max-width:150px}
+}
+/* 触控设备（iPad / 手机）：加大可点区域 */
+@media (pointer:coarse){
+  button{-webkit-tap-highlight-color:transparent}
+  .icon-btn{width:40px;height:40px}
+  .btn{padding:11px 20px}
+  .mode-switch button{padding:9px 18px}
+  .seg button{padding:10px 6px}
+  .stop-row{padding:12px}
+  .kw-mask{padding:0 4px}
+  .mchip{padding:5px 11px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;animation:none!important}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar" data-od-id="topbar">
+  <div class="topbar-in">
+    <div class="brand">
+      <span class="seal" aria-hidden="true">宫词</span>
+      <span class="brand-txt">
+        <b>故宫英文导游词记忆站</b>
+        <span>BEIJING JUNIOR GUIDE EXAM · ENGLISH ORAL</span>
+      </span>
+    </div>
+    <div class="progress-chip" title="已掌握站点 / 全部站点">
+      <span>已掌握</span><b class="num" id="progNum">0</b><span class="num">/ 11</span>
+    </div>
+    <nav class="mode-switch" aria-label="模式切换">
+      <button id="btnOverview" aria-pressed="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-5.1-7-11a7 7 0 1 1 14 0c0 5.9-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>
+        整体纵览
+      </button>
+      <button id="btnRecite" aria-pressed="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16M4 10h16M4 15h10"/><path d="M17 14v6M14 17h6"/></svg>
+        知识点背诵
+      </button>
+    </nav>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- ═══════════ 模式一：整体纵览 ═══════════ -->
+  <section class="mode-view on" id="viewOverview" data-od-id="overview" aria-label="整体纵览">
+    <div class="ov-grid">
+
+      <div class="panel map-card" data-od-id="axis-map">
+        <div class="panel-hd">
+          <h2>紫禁城中轴平面图</h2>
+          <span class="meta">南 · 午门 → 北 · 神武门</span>
+        </div>
+        <div class="map-wrap" id="mapWrap">
+          <svg viewBox="0 0 440 668" role="img" aria-label="故宫中轴线示意图，标注十一个讲解站点">
+            <!-- 护城河与城墙 -->
+            <rect class="mp-moat" x="30" y="14" width="380" height="640" rx="10"/>
+            <rect class="mp-wall" x="52" y="36" width="336" height="596" rx="4"/>
+            <!-- 中轴御路 -->
+            <path class="mp-road" d="M220 600 L220 68"/>
+            <!-- 神武门（北） -->
+            <rect class="mp-hall" x="182" y="40" width="76" height="22" rx="3"/>
+            <!-- 御花园 -->
+            <rect class="mp-garden" x="120" y="92" width="200" height="118" rx="6"/>
+            <rect class="mp-hall-lite" x="198" y="132" width="44" height="30" rx="3"/>
+            <text class="mp-lbl" x="221" y="176" text-anchor="middle">钦安殿</text>
+            <circle class="mp-hall-lite" cx="282" cy="120" r="9"/>
+            <text class="mp-lbl" x="282" y="141" text-anchor="middle">堆秀山</text>
+            <!-- 东六宫 / 西六宫（背景） -->
+            <g opacity=".5">
+              <rect class="mp-ctx" x="76" y="236" width="112" height="96" rx="4"/>
+              <text class="mp-lbl" x="132" y="288" text-anchor="middle">东六宫</text>
+              <rect class="mp-ctx" x="252" y="236" width="112" height="96" rx="4"/>
+              <text class="mp-lbl" x="308" y="288" text-anchor="middle">西六宫</text>
+            </g>
+            <!-- 坤宁宫 / 交泰殿 / 乾清宫 -->
+            <rect class="mp-hall" x="186" y="196" width="68" height="24" rx="3"/>
+            <rect class="mp-hall" x="196" y="238" width="48" height="22" rx="3"/>
+            <rect class="mp-hall" x="182" y="280" width="76" height="26" rx="3"/>
+            <!-- 乾清门 -->
+            <rect class="mp-hall" x="188" y="326" width="64" height="18" rx="3"/>
+            <!-- 三大殿台基（土字形） -->
+            <path d="M148 458 L148 402 L186 402 L186 356 L254 356 L254 402 L292 402 L292 458 Z"
+                  style="fill:var(--map-terrace);stroke:var(--map-wall-line)" stroke-width="1.5"/>
+            <rect class="mp-hall" x="176" y="366" width="88" height="26" rx="3"/>
+            <rect class="mp-hall" x="200" y="404" width="40" height="20" rx="3"/>
+            <rect class="mp-hall" x="176" y="432" width="88" height="20" rx="3"/>
+            <!-- 文华殿 / 武英殿（背景） -->
+            <g opacity=".5">
+              <rect class="mp-ctx" x="310" y="470" width="66" height="52" rx="4"/>
+              <text class="mp-lbl" x="343" y="500" text-anchor="middle">文华殿</text>
+              <rect class="mp-ctx" x="64" y="470" width="66" height="52" rx="4"/>
+              <text class="mp-lbl" x="97" y="500" text-anchor="middle">武英殿</text>
+            </g>
+            <!-- 太和门 -->
+            <rect class="mp-hall" x="184" y="500" width="72" height="22" rx="3"/>
+            <!-- 内金水河 -->
+            <path class="mp-water" d="M120 546 C 170 534, 270 534, 320 546 C 270 560, 170 560, 120 546 Z"/>
+            <g style="stroke:var(--surface)" stroke-width="2">
+              <line x1="176" y1="538" x2="176" y2="556"/><line x1="198" y1="536" x2="198" y2="558"/>
+              <line x1="220" y1="535" x2="220" y2="559"/><line x1="242" y1="536" x2="242" y2="558"/>
+              <line x1="264" y1="538" x2="264" y2="556"/>
+            </g>
+            <!-- 午门（南，凹字形） -->
+            <path d="M168 594 L168 566 L182 566 L182 584 L258 584 L258 566 L272 566 L272 594 Z"
+                  class="mp-hall"/>
+            <!-- 站点定位点 -->
+            <g id="pinLayer"></g>
+          </svg>
+        </div>
+        <div class="map-legend" aria-hidden="true">
+          <span class="lg"><i class="c0"></i>未开始</span>
+          <span class="lg"><i class="c1"></i>学习中</span>
+          <span class="lg"><i class="c2"></i>已掌握</span>
+        </div>
+      </div>
+
+      <div class="panel ov-list" data-od-id="route-list">
+        <div class="panel-hd">
+          <h2>路线讲解顺序</h2>
+          <span class="meta">11 站</span>
+        </div>
+        <ul class="stop-list" id="stopList"></ul>
+      </div>
+
+      <div class="panel detail" id="ovDetail" data-od-id="stop-detail" aria-live="polite"></div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════ 模式二：知识点背诵 ═══════════ -->
+  <section class="mode-view" id="viewRecite" data-od-id="recite" aria-label="知识点背诵">
+    <div class="rc-grid">
+
+      <aside class="rc-rail">
+        <div class="panel">
+          <div class="panel-hd"><h2>背诵站点</h2><span class="meta">点击切换</span></div>
+          <ul class="stop-list" id="reciteStops"></ul>
+        </div>
+        <div class="panel rec-card" data-od-id="recorder">
+          <div class="panel-hd" style="padding:0 0 12px;border-bottom:0"><h2>录音跟读</h2></div>
+          <div class="rec-top">
+            <button class="rec-btn" id="recBtn" aria-pressed="false">
+              <span class="dot" aria-hidden="true"></span><span id="recLabel">开始录音</span>
+            </button>
+            <span class="rec-time num" id="recTime">00:00</span>
+          </div>
+          <p class="rec-hint">先听系统朗读，再录下自己的版本，回放比对重音与停顿。录音仅本次浏览会话内有效。</p>
+          <div class="rec-error" id="recError" role="alert"></div>
+          <div class="takes" id="takes"></div>
+        </div>
+      </aside>
+
+      <div class="rc-main">
+        <div class="panel" data-od-id="recite-toolbar">
+          <div class="rc-toolbar">
+            <div class="seg" role="group" aria-label="背诵档位" id="maskSeg">
+              <button data-lv="full" aria-pressed="true">看全文</button>
+              <button data-lv="keys" aria-pressed="false">遮关键词</button>
+              <button data-lv="blank" aria-pressed="false">全遮背诵</button>
+            </div>
+            <div class="rc-row">
+              <button class="btn" id="cnToggle" aria-pressed="true">中文对照</button>
+              <button class="btn" id="revealAll">显现全部关键词</button>
+              <button class="btn primary" id="playAllBtn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg>
+                连读本站
+              </button>
+              <button class="btn" id="stopAudioBtn">停止朗读</button>
+            </div>
+            <div class="rc-row">
+              <label for="voiceSel">朗读嗓音</label>
+              <select id="voiceSel"></select>
+              <label for="rateRange">语速</label>
+              <input type="range" id="rateRange" min="0.6" max="1.15" step="0.05" value="0.9" />
+              <span class="val num" id="rateVal">0.90×</span>
+            </div>
+            <p class="tts-note" id="ttsNote">当前浏览器不支持语音朗读，建议改用 Chrome、Edge 或 Safari 打开本页。</p>
+          </div>
+        </div>
+
+        <div class="panel" id="recitePanel" data-od-id="script-panel" aria-live="polite">
+          <div class="recite-empty" id="reciteEmpty">
+            <span class="big-seal" aria-hidden="true">背</span>
+            <h3 style="margin:0;font-family:var(--font-display)">选择一个站点开始背诵</h3>
+            <p>建议顺序：先「看全文」跟读两遍，再「遮关键词」回忆，最后「全遮背诵」检验。</p>
+          </div>
+          <div id="reciteBody" style="display:none"></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer class="pagefoot" data-od-id="pagefoot">
+  <div class="pagefoot-in">
+    <span>讲解词依据《北京导游服务能力——北京现场导游考试教材》中英文部分整理，并结合公开资料校对；仅供个人备考学习使用。</span>
+    <span>站点实景图来自 <a href="https://commons.wikimedia.org" target="_blank" rel="noopener">Wikimedia Commons</a>，可在各站点详情中查看出处；进度保存在本机浏览器中。</span>
+  </div>
+</footer>
+
+<div class="toast num" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ══════════════════════════ 数据 ══════════════════════════ */
+/* <m>…</m> 标记背诵关键词；cn 为中文对照。iu = CDN 直连缩略图（主源）；imgFile 用于出处链接与 Special:FilePath 二级回退。 */
+const IMG = f => "https://commons.wikimedia.org/wiki/Special:FilePath/" + encodeURIComponent(f) + "?width=1280";
+const PAGE = f => "https://commons.wikimedia.org/wiki/File:" + encodeURIComponent(f);
+
+const STOPS = [
+{
+  id:"wumen", n:"01", cn:"午门", en:"The Meridian Gate",
+  hook:"故宫正门 · 五凤楼 · 紫禁城概况", minutes:4,
+  imgFile:"Meridian Gate (Forbidden City) 2015 August.jpg",
+  iu:"https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Meridian_Gate_%28Forbidden_City%29_2015_August.jpg/1280px-Meridian_Gate_%28Forbidden_City%29_2015_August.jpg",
+  alt:"故宫午门正面全景",
+  paras:[
+    {en:`Hello, everyone! Welcome to the <m>Palace Museum</m>. The Forbidden City, known as the <m>Purple Forbidden City</m>, was the imperial palace of the <m>Ming and Qing dynasties</m>. Built in <m>1420</m>, the 18th year of Emperor Yongle's reign, it has a history of nearly 600 years. It is the largest and best-preserved ancient palace complex in the world. In 1961 it was listed as a national key cultural relics protection unit, and in 1987 it was inscribed on the <m>UNESCO World Heritage List</m>.`,
+     cn:`各位游客，大家好，欢迎来到故宫博物院。故宫，又称紫禁城，是明清两代的皇宫，建成于明永乐十八年（1420年），距今已有近600年的历史，是世界上现存规模最大、保存最完整的古代皇宫建筑群。1961年被列为全国重点文物保护单位，1987年被联合国教科文组织列入《世界遗产名录》。`},
+    {en:`Why “Purple Forbidden”? Ancient Chinese astronomers divided the main stars into <m>three walls</m>, four symbols and twenty-eight mansions. The <m>Purple Forbidden Enclosure</m> lies at the very center — the residence of the Heavenly Emperor, called the Purple Palace. The feudal emperors called themselves the <m>Sons of Heaven</m> and compared their palace to it; as ordinary people were <m>forbidden</m> to enter, the name Purple Forbidden City was formed.`,
+     cn:`名称由来：古代天文学家把恒星分为三垣、四象、二十八星宿，紫微垣居中，是天帝所居的“紫宫”。封建帝王自称天子，把皇宫比作天上的紫宫；又因皇宫是禁地、百姓不得进入，故称“紫禁城”。`},
+    {en:`The Forbidden City stands on the <m>central axis</m> of Beijing. It is <m>961 meters</m> long from north to south and <m>753 meters</m> wide from east to west, covering over <m>720,000 square meters</m>, with more than 9,000 room-units, surrounded by <m>10-meter</m> high walls and a <m>52-meter</m> wide moat. There are four gates: the Meridian Gate in the south, the Gate of Divine Prowess in the north, and the East and West Flowery Gates.`,
+     cn:`故宫坐落在北京城的中轴线上，南北长961米、东西宽753米，占地超过72万平方米，有房屋9000余间，四周围有10米高的城墙和52米宽的护城河。开四门：南午门、北神武门、东东华门、西西华门。`},
+    {en:`The layout consists of two parts: the <m>outer court</m> and the <m>inner court</m>. The outer court, in the south, centers on the three grand halls — the Hall of Supreme Harmony, the Hall of Complete Harmony and the Hall of Preserving Harmony — where grand ceremonies were held. The inner court, in the north, is centered on the three rear palaces — the Palace of Heavenly Purity, the Hall of Union and the Palace of Earthly Tranquility — flanked by the six eastern and six western palaces, the living quarters of the empresses and concubines.`,
+     cn:`布局分外朝与内廷：外朝在南，以太和、中和、保和三大殿为主体，是举行大朝会之所；内廷在北，以乾清宫、交泰殿、坤宁宫后三宫为核心，东西两侧为东六宫、西六宫，是后妃居住之地。`},
+    {en:`The Meridian Gate is the front gate of the Forbidden City, because <m>wu</m> on the ancient compass means due south. The gate tower is a <m>double-eaved hip-roof</m> building, nine bays wide and five bays deep. Its concave terrace spreads like a bird with open wings, so it is also called the <m>Five Phoenix Towers</m>. Of the five gateways, the central one was reserved for the <m>emperor</m>; the empress could enter through it only on her <m>wedding day</m>; and the top three scholars of the imperial examination could leave through it once. Grand ceremonies such as <m>announcing the calendar</m> and <m>offering prisoners of war</m> were held in front of the gate.`,
+     cn:`午门是紫禁城正门，罗盘上“午”代表正南。正楼为重檐庑殿顶，面阔九间、进深五间；城台呈“凹”字形，如展翅之鸟，故又称“五凤楼”。城台开五个门洞：正门专供皇帝出入；皇后大婚可入一次；殿试鼎甲三人可出一次。颁朔、献俘等大典均在午门前举行。`}
+  ],
+  facts:[["建成","1420"],["开间","九五开间"],["别称","五凤楼"],["门洞","5 个"],["大典","颁朔 · 献俘"]],
+  qa:[
+    {q:"Why is it called the Purple Forbidden City?", a:"Ziwei Yuan (the Purple Forbidden Enclosure) is the center of the sky and the residence of the Heavenly Emperor; emperors compared their palace to it, and ordinary people were forbidden to enter — hence “Purple Forbidden City”。"},
+    {q:"Who could pass through the central gateway of the Meridian Gate?", a:"The emperor exclusively; the empress once on her wedding day; the top three scholars (Zhuangyuan, Bangyan, Tanhua) could leave through it on the day of the palace examination announcement。"}
+  ]
+},
+{
+  id:"taihemen", n:"02", cn:"太和门广场", en:"Square of the Gate of Supreme Harmony",
+  hook:"内金水河 · 五桥五德 · 御门听政", minutes:2,
+  imgFile:"Gate of Supreme Harmony.JPG",
+  iu:"https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Gate_of_Supreme_Harmony.JPG/1280px-Gate_of_Supreme_Harmony.JPG",
+  alt:"故宫太和门正面",
+  paras:[
+    {en:`The first courtyard of the front court is the square of the <m>Gate of Supreme Harmony</m>. In the center flows the <m>Inner Golden Water River</m>, echoing the Outer Golden Water River in front of Tian'anmen. <m>Five marble bridges</m> span the river, symbolizing the five virtues: benevolence, righteousness, rite, wisdom and fidelity.`,
+     cn:`前朝第一进院落是太和门广场。广场中央为内金水河，与天安门前外金水河相呼应。河上横跨五座汉白玉石桥，象征仁、义、礼、智、信五德。`},
+    {en:`The river had many functions in history: it served as the main <m>drainage</m> channel, supplied <m>water for construction</m>, provided the major source for <m>fire fighting</m>, met the needs of <m>geomancy</m>, and satisfied <m>architectural aesthetics</m>. It also separates the space and embellishes the landscape.`,
+     cn:`内金水河的作用：一是排水主干道，二是营造用水来源，三是防火水源，四是风水需要，五是建筑美学需要；同时分隔空间、点缀景观。`},
+    {en:`This square was where Ming emperors <m>gave audience at the gate</m> — listening to state affairs at the Gate of Supreme Harmony. Less than <m>100 days</m> after the capital moved to Beijing, the three grand halls burned down, so Emperor <m>Yongle</m> handled state affairs right here.`,
+     cn:`这里曾是明代皇帝“御门听政”之处——“御门”指太和门。永乐迁都不足百日三大殿即遭火毁，永乐帝便在此御门听政、处理朝政。`}
+  ],
+  facts:[["石桥","5 座"],["五德","仁义礼智信"],["河名","内金水河"],["旧制","御门听政"]],
+  qa:[
+    {q:"What were the functions of the Inner Golden Water River?", a:"Drainage, water for construction, fire fighting, geomancy, and architectural aesthetics — plus separating space and adorning the landscape。"}
+  ]
+},
+{
+  id:"taihedian", n:"03", cn:"太和殿", en:"The Hall of Supreme Harmony",
+  hook:"金銮宝殿 · 皇权象征 · 千龙吐水", minutes:4,
+  imgFile:"Hall of Supreme Harmony (20220218132012).jpg",
+  iu:"https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Hall_of_Supreme_Harmony_%2820220218132012%29.jpg/1280px-Hall_of_Supreme_Harmony_%2820220218132012%29.jpg",
+  alt:"故宫太和殿正面",
+  paras:[
+    {en:`Inside the Gate of Supreme Harmony lies the most important courtyard — the Hall of Supreme Harmony and its square of about <m>30,000 square meters</m>. The three grand halls stand on a three-level marble terrace shaped like the Chinese character <m>“earth”</m>, <m>8.13 meters</m> high. Underneath the balustrades are <m>1,142 gargoyles</m>; in heavy rain, water spills from all the dragon heads — the famous scene of “a thousand dragons spitting water”.`,
+     cn:`太和门内是故宫最重要的院落——太和殿及约3万平方米的广场。三大殿坐落在“土”字形三层汉白玉基座上，高8.13米，护栏下共有1142个螭首。大雨之际千龙吐水，蔚为壮观。`},
+    {en:`Commonly known as the <m>Gold Throne Hall</m>, it is the main hall of the Forbidden City and the symbol of <m>imperial power</m>. It is <m>35.05 meters</m> high, eleven bays wide and five bays deep, covering <m>2,377 square meters</m> — the highest, largest and most distinguished hall in the palace. The <m>double-eaved hip roof</m> is the highest grade of ancient architecture, and its eaves carry <m>ten mythical animals</m>, the largest number of any building.`,
+     cn:`太和殿俗称“金銮宝殿”，是紫禁城正殿、皇权的象征。殿高35.05米，面阔11间、进深5间，面积约2377平方米，是宫中最高、最大、最尊贵的宫殿。重檐庑殿顶为古建筑最高等级，垂脊上排列10只脊兽，数量居全国之冠。`},
+    {en:`The hall is supported by <m>72 pillars</m>, with six gilded <m>coiling-dragon pillars</m> beside the throne and the floor paved with “golden bricks”. The throne rests on a two-meter <m>Sumeru platform</m> with a golden-dragon screen behind it. Above hangs the caisson, where a coiling dragon holds the <m>Xuanyuan Mirror</m> in its mouth — implying the emperor on the throne is the rightful heir of the Yellow Emperor. Grand ceremonies — <m>enthronement</m>, imperial wedding, Lunar New Year, <m>winter solstice</m> and the emperor's birthday — were all held here.`,
+     cn:`殿内由72根巨柱支撑，宝座两旁分列6根沥粉贴金蟠龙金柱，金砖漫地。宝座置于2米高须弥座上，后有雕龙金漆屏风。上方藻井内蟠龙俯首衔“轩辕镜”，寓意宝座上的皇帝是轩辕黄帝的正统继承人。登基、大婚、元旦、冬至、万寿等大典均在此举行。`}
+  ],
+  facts:[["殿高","35.05 m"],["面积","2,377 ㎡"],["柱网","72 根"],["脊兽","10 只"],["广场","约 3 万㎡"]],
+  qa:[
+    {q:"Why is the terrace of the three grand halls shaped like the character “earth”?", a:"The three halls stand on a three-level marble terrace shaped like 土, which represents “earth” at the center of the five elements, symbolizing supreme authority。"},
+    {q:"What ceremonies were held in the Hall of Supreme Harmony?", a:"Enthronement, imperial wedding, Lunar New Year, winter solstice, the emperor's birthday, dispatching generals, and announcing the results of the imperial examination。"}
+  ]
+},
+{
+  id:"zhonghedian", n:"04", cn:"中和殿", en:"The Hall of Complete Harmony",
+  hook:"大典前小憩 · 阅视祝文", minutes:2,
+  imgFile:"Hall of Central Harmony.JPG",
+  iu:"https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Hall_of_Central_Harmony.JPG/1280px-Hall_of_Central_Harmony.JPG",
+  alt:"故宫中和殿",
+  paras:[
+    {en:`The Hall of Complete Harmony stands between the other two halls — a square building with a <m>pointed roof</m> and a gilded top. The name comes from the <m>Doctrine of the Mean</m>, reflecting the Confucian ideal of equilibrium and harmony. In the early Ming it was called Huagai Hall, and received its present name in the Qing.`,
+     cn:`中和殿位于三大殿中部，方形四角攒尖顶、鎏金宝顶。“中和”二字取自《礼记·中庸》，体现儒家中庸之道。明初称华盖殿，嘉靖时改中极殿，清顺治年间定名中和殿。`},
+    {en:`Before grand ceremonies, the emperor <m>rested</m> here and received greetings from the officials. Before sacrificing at the temples and altars, he <m>examined the sacrificial writings</m> here a day ahead; and before the spring <m>plowing ceremony</m>, he inspected the seeds and farm tools in this hall.`,
+     cn:`凡遇大典，皇帝先在此稍事休息、接受执事官朝拜，再赴太和殿；亲祭坛庙前一日在此阅视祝文；每年仲春亲耕耤田前，还要在此查验种子和农具。`}
+  ],
+  facts:[["形制","方形攒尖顶"],["宝顶","鎏金"],["用途","大典前休息"],["赐名","取自《中庸》"]],
+  qa:[
+    {q:"What did the emperor do in the Hall of Complete Harmony?", a:"He rested and received greetings before grand ceremonies, reviewed sacrificial writings before major worship, and checked seeds and farm tools before the spring plowing ceremony。"}
+  ]
+},
+{
+  id:"baohedian", n:"05", cn:"保和殿", en:"The Hall of Preserving Harmony",
+  hook:"殿试考场 · 云龙大石雕", minutes:3,
+  imgFile:"2015-01-10 Hall of Preserving Harmony (Forbidden City).jpg",
+  iu:"https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/2015-01-10_Hall_of_Preserving_Harmony_%28Forbidden_City%29.jpg/1280px-2015-01-10_Hall_of_Preserving_Harmony_%28Forbidden_City%29.jpg",
+  alt:"故宫保和殿",
+  artifact:{
+    title:"云龙大石雕 · The Cloud-Dragon Stone Carving",
+    dims:"16.57 m × 3.07 m × 1.7 m · 200+ t",
+    note:"艾叶青石雕成，九条蛟龙飞腾于流云海水之间；石料采自北京房山大石窝，冬季泼水成冰道运入宫中，为紫禁城内最大石雕。"
+  },
+  paras:[
+    {en:`The Hall of Preserving Harmony stands at the rear of the terrace. In the Ming, the emperor <m>changed into ceremonial robes</m> here before grand ceremonies and held year-end banquets. In the Qing, banquets were given here for vassal princes and before princesses' weddings; after Emperor <m>Qianlong</m>'s reign it also became the place of the <m>palace examination</m> — the highest level of the imperial examination.`,
+     cn:`保和殿位于“土”字形基座后部。明代皇帝在此更衣，年底宴请文武百官；清代除夕宴请外藩王公，公主下嫁宴亦在此举行；乾隆以后，这里成为科举最高等级——殿试的考场。`},
+    {en:`Behind the hall lies the great <m>cloud-and-dragon stone carving</m> — <m>16.57 meters</m> long, 3.07 meters wide, 1.7 meters thick, weighing over <m>200 tons</m>, the largest stone carving in the Forbidden City. Carved with <m>nine dragons</m> playing among clouds and waves, it was quarried at Dashiwo in Fangshan and transported into the palace over an <m>ice road</m> in winter.`,
+     cn:`殿后阶陛间的云龙大石雕：长16.57米、宽3.07米、厚1.7米，重达200多吨，是紫禁城内最大的石雕。石面浮雕九条蛟龙，穿梭于流云海水之间；石料采自房山大石窝，冬季沿途泼水成冰，以冰道运入宫中。`}
+  ],
+  facts:[["清制","殿试考场"],["石雕","16.57 m"],["重量","200+ t"],["运输","冬季冰道"]],
+  qa:[
+    {q:"Where was the palace examination held after Emperor Qianlong?", a:"In the Hall of Preserving Harmony — the highest stage of the imperial examination system。"},
+    {q:"How was the great stone carving transported?", a:"It was quarried at Dashiwo, Fangshan; workers poured water on the road in winter to form an ice road, and the stone was pulled along it into the palace。"}
+  ]
+},
+{
+  id:"qianqingmen", n:"06", cn:"乾清门广场", en:"Square of the Gate of Heavenly Purity",
+  hook:"横街 · 御门听政 · 军机处", minutes:2,
+  imgFile:"20200110 Gate of Heavenly Purity-3.jpg",
+  iu:"https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/20200110_Gate_of_Heavenly_Purity-3.jpg/1280px-20200110_Gate_of_Heavenly_Purity-3.jpg",
+  alt:"故宫乾清门广场",
+  paras:[
+    {en:`The square of the Gate of Heavenly Purity is the dividing line between the outer court and the inner court, commonly known as the <m>“cross street”</m>. From Emperor <m>Kangxi</m>'s reign, emperors gave audience at this gate to handle state affairs; the practice ended after Emperor <m>Xianfeng</m>. On October 10, <m>1925</m>, the founding ceremony of the Palace Museum was held right here.`,
+     cn:`乾清门广场是外朝与内廷的分界，俗称“横街”。自康熙朝起，皇帝在此“御门听政”，冬春辰正初刻、夏秋辰初初刻举行，又称“早朝”；咸丰以后国势衰落，此制废止。1925年10月10日，故宫博物院成立仪式就在乾清门举行。`},
+    {en:`Inside the western gate is the famous <m>Office of the Privy Council</m>, set up by Emperor <m>Yongzheng</m> in <m>1729</m> to deal with the tense northwestern military situation. Its establishment brought imperial <m>centralization</m> to its peak in Chinese feudal society.`,
+     cn:`隆宗门内北侧是著名的军机处。雍正七年（1729年）因西北用兵军情紧急而设军机房，三年后改称军机处。军机处的设立使皇帝集权达到顶峰。`}
+  ],
+  facts:[["俗称","横街"],["听政","康熙朝起"],["军机处","1729 年设"],["建院仪式","1925·10·10"]],
+  qa:[
+    {q:"Why was the Office of the Privy Council established?", a:"Emperor Yongzheng set it up in 1729 to handle the urgent northwestern military campaigns; it marked the peak of imperial centralization。"}
+  ]
+},
+{
+  id:"qianqinggong", n:"07", cn:"乾清宫", en:"The Palace of Heavenly Purity",
+  hook:"正大光明 · 秘密立储", minutes:3,
+  imgFile:"Palace of Heavenly Purity (20220218132746).jpg",
+  iu:"https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Palace_of_Heavenly_Purity_%2820220218132746%29.jpg/1280px-Palace_of_Heavenly_Purity_%2820220218132746%29.jpg",
+  alt:"故宫乾清宫",
+  paras:[
+    {en:`The Palace of Heavenly Purity was the emperor's <m>bedchamber</m> — a nine-by-five-bay building with a <m>double-eaved hip roof</m>. “Qian” means heaven in the <m>Book of Changes</m>. In front of the hall stand a bronze tortoise and crane, a sundial and a grain measure; under the terrace, two gilded miniature pavilions of “<m>jiangshan</m>” and “<m>sheji</m>” symbolize the eternal empire and plentiful harvests.`,
+     cn:`乾清宫是皇帝生前居住的寝宫，九五开间、重檐庑殿顶。“乾”为天，出自《周易》。殿前陈设铜龟铜鹤、日晷嘉量；丹陛下两侧石台上各置一座镏金“江山”“社稷”金殿，象征江山永固、五谷丰登。`},
+    {en:`Above the throne hangs the plaque <m>“Be Open and Aboveboard”</m>, written by Emperor <m>Shunzhi</m>. From Emperor Yongzheng on, the name of the crown prince was written <m>secretly</m> — one copy kept by the emperor, the other sealed <m>behind this plaque</m>. Four emperors — <m>Qianlong, Jiaqing, Daoguang and Xianfeng</m> — came to the throne this way. From Yongzheng's reign the emperor moved his residence to the Hall of Mental Cultivation.`,
+     cn:`殿内正中悬顺治御笔“正大光明”匾，是清代皇帝的祖训。雍正以后实行秘密立储：遗诏一式两份，一份皇帝随身携带，一份封存于匾后；皇帝驾崩后大臣核对两份诏书拥立新君。乾隆、嘉庆、道光、咸丰四帝皆由此继位。雍正起皇帝移居养心殿。`}
+  ],
+  facts:[["匾额","正大光明"],["立储","秘密立储制"],["受益之帝","4 位"],["形制","九五开间"]],
+  qa:[
+    {q:"What was hidden behind the plaque “Be Open and Aboveboard”?", a:"The edict naming the successor in the secret succession system — one copy behind the plaque, one kept by the emperor; they were checked together after the emperor's death。"},
+    {q:"Which four emperors succeeded through the secret system?", a:"Qianlong, Jiaqing, Daoguang and Xianfeng。"}
+  ]
+},
+{
+  id:"jiaotaidian", n:"08", cn:"交泰殿", en:"The Hall of Union",
+  hook:"皇后正宫 · 二十五宝玺 · 无为匾", minutes:2,
+  imgFile:"Forbidden City IMG 4340 Hall of Celestial and Terrestrial Union (Jiaotaidian).jpg",
+  iu:"https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Forbidden_City_IMG_4340_Hall_of_Celestial_and_Terrestrial_Union_%28Jiaotaidian%29.jpg/1280px-Forbidden_City_IMG_4340_Hall_of_Celestial_and_Terrestrial_Union_%28Jiaotaidian%29.jpg",
+  alt:"故宫交泰殿内景",
+  paras:[
+    {en:`The Hall of Union, built in the Ming <m>Jiajing</m> period, is a square building with a pointed roof. “Union” means the harmony of <m>heaven and earth</m>, yin and yang. It was the main palace of the <m>empress</m>, where she received greetings on the Lunar New Year, the winter solstice and her birthday.`,
+     cn:`交泰殿建于明嘉靖年间，四角攒尖顶方形建筑，取“乾坤交泰、阴阳和谐”之意。这里是皇后的正宫：元旦、冬至及千秋节（皇后生日），皇后在此接受嫔妃、命妇朝贺。`},
+    {en:`Inside hangs the plaque <m>“Wu Wei”</m> — governing by non-interference — in Emperor <m>Kangxi</m>'s handwriting. The hall houses a <m>water clock</m> in the east and a large <m>chiming clock</m> in the west, once the timekeeping center of the court. It also preserves the <m>25 imperial seals</m> classified by Emperor Qianlong — symbols of state power; twenty-five is the sum of the odd numbers one to nine, the <m>“number of heaven”</m>.`,
+     cn:`殿内悬康熙御笔“无为”匾，意为不施刑罚、以德化民。宝座东有乾隆年间铜壶滴漏、西有嘉庆年间造办处大自鸣钟，这里曾是宫廷计时中心。殿内还存放乾隆钦定的二十五方宝玺，是国家权力的象征——25取一、三、五、七、九奇数之和，即“天数”。`}
+  ],
+  facts:[["匾额","无为"],["宝玺","25 方"],["计时","滴漏 + 自鸣钟"],["用途","皇后正宫"]],
+  qa:[
+    {q:"What is kept in the Hall of Union?", a:"The 25 imperial seals defined by Emperor Qianlong — symbols of state power; 25 is the sum of the odd numbers one through nine, the “number of heaven”。"}
+  ]
+},
+{
+  id:"kunninggong", n:"09", cn:"坤宁宫", en:"The Palace of Earthly Tranquility",
+  hook:"皇后寝宫 · 大婚洞房 · 萨满祭祀", minutes:2,
+  imgFile:"Palace of Earthly Tranquility (20220218133044).jpg",
+  iu:"https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Palace_of_Earthly_Tranquility_%2820220218133044%29.jpg/1280px-Palace_of_Earthly_Tranquility_%2820220218133044%29.jpg",
+  alt:"故宫坤宁宫",
+  paras:[
+    {en:`The Palace of Earthly Tranquility was the empress's bedchamber in the Ming and the early Qing. “Kun” means <m>earth</m> — the empress, master of the inner court, should be as graceful and tranquil as the earth. After Emperor <m>Yongzheng</m>, the eastern warm chamber became the imperial <m>wedding chamber</m>.`,
+     cn:`坤宁宫自明代至清初是皇后的寝宫。“坤”即地，寓意皇后为后宫之主、母仪天下，当有大地般安忍不动的胸怀。雍正以后，皇后不再居此，东暖阁成为皇帝大婚的洞房。`},
+    {en:`The western part turned into a shrine for <m>shamanist worship</m> — a traditional <m>Manchu</m> practice of multi-god worship. Three grand ceremonies were held each year, and the emperor attended with princes and ministers. Inside, three great <m>pots</m> were used to boil pork and steam cakes for the offerings.`,
+     cn:`西部大殿改为萨满教祭神场所，是满族多神崇拜的祖先遗风。每年正月初二、二月初一、八月初一三次大祭，皇帝与王公大臣均参加；殿内东侧安设三口大锅，用于祭祀煮猪肉、做饽饽。`}
+  ],
+  facts:[["原用","皇后寝宫"],["清代","洞房 + 祭神"],["信仰","萨满祭祀"],["大祭","每年 3 次"]],
+  qa:[
+    {q:"What were the two Qing functions of the Palace of Earthly Tranquility?", a:"The emperor's wedding chamber (eastern room) and the shamanist shrine of the Manchu royal family (western hall)。"}
+  ]
+},
+{
+  id:"yuhuayuan", n:"10", cn:"御花园", en:"The Imperial Garden",
+  hook:"钦安殿 · 堆秀山 · 四季亭", minutes:3,
+  imgFile:"Imperial garden of the Forbidden City 20160826.jpg",
+  iu:"https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Imperial_garden_of_the_Forbidden_City_20160826.jpg/1280px-Imperial_garden_of_the_Forbidden_City_20160826.jpg",
+  alt:"故宫御花园",
+  paras:[
+    {en:`The Imperial Garden is the largest garden inside the palace — <m>rectangular</m>, covering <m>12,000 square meters</m>, scattered with more than <m>20 pavilions</m> and towers. At the center stands the <m>Hall of Imperial Peace</m>, built in 1417, worshiping the God of Water, Grand Emperor Zhenwu — the only <m>religious temple</m> on Beijing's central axis. On the first day of each season the emperor burned incense here, praying for protection from <m>fire</m> among so many wooden halls.`,
+     cn:`御花园是宫内最大的花园，长方形，占地1.2万平方米，园内亭台楼阁20余座。中央钦安殿建于明永乐十五年（1417年），供奉水神——玄天上帝（真武大帝），是北京中轴线上唯一的神殿。因紫禁城多为木构、易遭火患，每逢四季首日皇帝在此拈香行礼，祈求御火护宫。`},
+    {en:`In the northeast stands <m>Accumulated Refinement Hill</m> piled with Taihu rocks, topped by the <m>Imperial Viewing Pavilion</m> — the highest point of the garden, where the emperor and empress climbed on the <m>Double Ninth Festival</m>. Four pavilions in the garden represent the <m>four seasons</m>. To the north is the Gate of Divine Prowess, the back gate of the palace: when the emperor was away, the bell on it was struck <m>108 times</m>, then the drum every two hours.`,
+     cn:`园东北角是太湖石叠成的堆秀山，山上的御景亭为全园制高点，重阳节帝后在此登高远眺。园内四亭两两相对，象征春夏秋冬四季。北端神武门是宫城后门，门上设钟鼓报时：皇帝不在宫中时鸣钟108声，而后每两个时辰击鼓，翌日清晨再鸣钟。`}
+  ],
+  facts:[["面积","1.2 万㎡"],["核心","钦安殿"],["制高点","御景亭"],["四亭","象征四季"]],
+  qa:[
+    {q:"Which temple on the axis is the only religious building on Beijing's central axis?", a:"The Hall of Imperial Peace (Qin'andian) in the Imperial Garden, worshiping the water god Zhenwu for protection against fire。"}
+  ]
+},
+{
+  id:"shenwumen", n:"11", cn:"神武门", en:"The Gate of Divine Prowess",
+  hook:"避讳改名 · 欢送词收尾", minutes:2,
+  imgFile:"Gate of Divine Might 20160826.jpg",
+  iu:"https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Gate_of_Divine_Might_20160826.jpg/1280px-Gate_of_Divine_Might_20160826.jpg",
+  alt:"故宫神武门",
+  paras:[
+    {en:`The north gate was first called <m>Xuanwu Gate</m>. In the Qing, Emperor Kangxi's personal name was <m>Xuanye</m> — under feudal etiquette, mentioning the emperor's name was a <m>taboo</m> — so the gate was renamed the Gate of Divine Prowess. The gate tower carried the <m>bell and drum</m> of the imperial timekeeping platform.`,
+     cn:`神武门明代称玄武门。清康熙皇帝名玄烨，按封建避讳制度须回避皇帝名讳，故改名神武门。门上设钟鼓，曾承担宫城报时。`},
+    {en:`Ladies and gentlemen, our tour of the Forbidden City comes to an end here. I hope today's walk along the <m>central axis</m> has given you a deeper understanding of this <m>600-year-old</m> palace. Thank you for your cooperation. Welcome your suggestions, and I look forward to seeing you again in Beijing. <m>Safe journey home</m>!`,
+     cn:`各位朋友，故宫中轴线的讲解到此结束。希望今天沿中轴线的游览，能让大家对这座600年的宫殿有更深的了解。感谢大家的配合，欢迎提出宝贵意见，期待再会，祝各位一路平安！`}
+  ],
+  facts:[["旧称","玄武门"],["改名","避康熙名讳"],["位置","中轴线北端"]],
+  qa:[
+    {q:"Why was Xuanwu Gate renamed?", a:"To avoid the taboo of Emperor Kangxi's personal name “Xuanye”, it was renamed the Gate of Divine Prowess in the Qing。"}
+  ]
+}
+];
+
+/* ══════════════════════════ 状态 ══════════════════════════ */
+const $ = s => document.querySelector(s);
+const store = {
+  get(k, d){ try{ const v = localStorage.getItem("gongci.v1."+k); return v ? JSON.parse(v) : d; }catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem("gongci.v1."+k, JSON.stringify(v)); }catch(e){} }
+};
+let mastery = store.get("mastery", {});            // {stopId: 0|1|2}
+let mode = "overview";
+let currentStop = null;                             // 当前选中站点 id（两模式共用）
+let maskLevel = "full";                             // full | keys | blank
+let cnOn = true;
+let revealed = {};                                  // {paraIdx: Set(wordIdx)} 本轮显现
+let rate = store.get("tts", {rate:.9, voice:""}).rate;
+let voiceName = store.get("tts", {rate:.9, voice:""}).voice;
+let speaking = false, speakQueue = [];
+
+const M_LABEL = ["未开始","学习中","已掌握"];
+function announce(msg){ const t=$("#toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove("show"),1800); }
+function saveMastery(){ store.set("mastery", mastery); }
+function updateProgress(){
+  const n = STOPS.filter(s=>mastery[s.id]===2).length;
+  $("#progNum").textContent = n;
+}
+
+/* ══════════════════════════ 地图与列表 ══════════════════════════ */
+const PIN_POS = {
+  wumen:[220,612], taihemen:[220,524], taihedian:[220,452], zhonghedian:[258,414],
+  baohedian:[258,372], qianqingmen:[220,344], qianqinggong:[220,296], jiaotaidian:[258,250],
+  kunninggong:[258,208], yuhuayuan:[220,150], shenwumen:[220,68]
+};
+const PIN_LABEL_DY = { wumen:24, taihemen:-20, taihedian:-20, zhonghedian:26, baohedian:26, qianqingmen:-18, qianqinggong:-20, jiaotaidian:26, kunninggong:26, yuhuayuan:-26, shenwumen:32 };
+const PIN_LABEL_DX = { zhonghedian:52, baohedian:52, jiaotaidian:52, kunninggong:52 };
+
+function buildPins(){
+  const layer = $("#pinLayer");
+  layer.innerHTML = "";
+  STOPS.forEach(s=>{
+    const [x,y] = PIN_POS[s.id];
+    const g = document.createElementNS("http://www.w3.org/2000/svg","g");
+    g.setAttribute("class","pin"); g.setAttribute("tabindex","0"); g.setAttribute("role","button");
+    g.setAttribute("aria-label", s.n + " " + s.cn + " " + s.en + "，" + M_LABEL[mastery[s.id]||0]);
+    g.dataset.stop = s.id;
+    g.dataset.m = mastery[s.id]||0;
+    const dy = PIN_LABEL_DY[s.id]||-20, dx = PIN_LABEL_DX[s.id]||0;
+    g.innerHTML = `<circle class="pin-dot" cx="${x}" cy="${y}" r="15"></circle>
+      <text class="pin-txt" x="${x}" y="${y}">${s.n}</text>
+      <text class="pin-name" x="${x+dx}" y="${y+dy}">${s.cn}</text>`;
+    g.addEventListener("click", ()=> selectStop(s.id, "overview"));
+    g.addEventListener("keydown", e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); selectStop(s.id,"overview"); }});
+    layer.appendChild(g);
+  });
+  refreshPins();
+}
+function refreshPins(){
+  document.querySelectorAll(".pin").forEach(g=>{
+    g.dataset.m = mastery[g.dataset.stop]||0;
+    g.classList.toggle("active", g.dataset.stop===currentStop && mode==="overview");
+  });
+  document.querySelectorAll("#stopList .stop-row, #reciteStops .stop-row").forEach(b=>{
+    const id = b.dataset.stop;
+    b.setAttribute("aria-current", id===currentStop ? "true" : "false");
+    const chip = b.querySelector(".mchip");
+    if(chip){ const m = mastery[id]||0; chip.className = "mchip" + (m? " m"+m : ""); chip.textContent = M_LABEL[m]; }
+  });
+}
+function buildStopLists(){
+  ["#stopList","#reciteStops"].forEach(sel=>{
+    const ul = $(sel); ul.innerHTML = "";
+    STOPS.forEach(s=>{
+      const li = document.createElement("li");
+      const m = mastery[s.id]||0;
+      li.innerHTML = `<button class="stop-row" data-stop="${s.id}" aria-current="false">
+        <span class="n num">${s.n}</span>
+        <span class="nm"><b>${s.cn}</b><span>${s.en}</span></span>
+        <span class="mchip${m?" m"+m:""}">${M_LABEL[m]}</span>
+      </button>`;
+      li.querySelector("button").addEventListener("click", ()=> selectStop(s.id, mode));
+      ul.appendChild(li);
+    });
+  });
+}
+
+/* ══════════════════════════ 站点详情（纵览） ══════════════════════════ */
+function stripMarks(t){ return t.replace(/<\/?m>/g,""); }
+function paraEnHtml(p, recite){
+  const src = p.en;
+  if(!recite) return "<p class=\"en\" lang=\"en\">" + src.replace(/<\/?m>/g,"") + "</p>";
+  if(maskLevel==="full") return "<p class=\"en\" lang=\"en\">" + src.replace(/<\/?m>/g,"") + "</p>";
+  if(maskLevel==="keys"){
+    let wi = 0;
+    return "<p class=\"en\" lang=\"en\">" + src.replace(/<m>(.*?)<\/m>/g, (m0,w)=>{
+      const idx = wi++;
+      const isRev = revealed[idx];
+      return isRev
+        ? `<span class="kw-mask revealed" role="button" tabindex="0" data-wi="${idx}" data-w="${w}">${w}</span>`
+        : `<span class="kw-mask" role="button" tabindex="0" data-wi="${idx}" data-w="${w}" aria-label="显现关键词">·····</span>`;
+    }) + "</p>";
+  }
+  return "";
+}
+function selectStop(id, targetMode){
+  currentStop = id;
+  revealed = {};
+  if(targetMode==="recite" && mode!=="recite"){ setMode("recite"); }
+  refreshPins();
+  if(mode==="overview") renderDetail();
+  if(mode==="recite") renderRecite();
+}
+function photoHtml(s){
+  const fb = `<div class="ph-fallback"><span class="ph-seal" aria-hidden="true">${s.cn.slice(0,1)}</span><p>图片加载中 / 暂不可用</p></div>`;
+  const fbSrc = IMG(s.imgFile);
+  return `<div class="d-photo">${fb}
+    <img src="${s.iu}" alt="${s.alt}" decoding="async" fetchpriority="high" data-fb="${fbSrc}" style="position:absolute;inset:0"
+      onload="this.previousElementSibling.style.display='none'"
+      onerror="if(this.dataset.fb){this.src=this.dataset.fb;this.removeAttribute('data-fb');}else{this.remove();}" /></div>`;
+}
+function detailHtml(s){
+  const paras = s.paras.map((p,i)=>`
+    <div class="para">
+      <p class="en" lang="en">${stripMarks(p.en)}</p>
+      <p class="cn">${p.cn}</p>
+    </div>`).join("");
+  const facts = s.facts.map(f=>`<span class="fact">${f[0]} <b>${f[1]}</b></span>`).join("");
+  const qa = (s.qa||[]).map(q=>`
+    <details><summary>${q.q}</summary><p class="a">${q.a}</p></details>`).join("");
+  const artifact = s.artifact ? `
+    <div class="d-sec"><h4>实物要点</h4>
+      <div class="artifact">
+        <svg viewBox="0 0 640 150" role="img" aria-label="云龙大石雕示意">
+          <rect width="640" height="150" style="fill:var(--stone)"/>
+          <g style="stroke:color-mix(in srgb, var(--stone) 55%, white)" stroke-width="1" fill="none" opacity=".9">
+            <path d="M0 120 Q40 108 80 120 T160 120 T240 120 T320 120 T400 120 T480 120 T560 120 T640 120"/>
+            <path d="M0 134 Q40 122 80 134 T160 134 T240 134 T320 134 T400 134 T480 134 T560 134 T640 134"/>
+            <path d="M0 106 Q40 96 80 106 T160 106 T240 106 T320 106 T400 106 T480 106 T560 106 T640 106"/>
+          </g>
+          <text x="320" y="62" text-anchor="middle" style="fill:color-mix(in srgb, white 82%, var(--stone));font-family:var(--font-mono);font-size:21px;letter-spacing:.06em">九龙 · 流云 · 海水江崖</text>
+          <text x="320" y="88" text-anchor="middle" style="fill:color-mix(in srgb, white 58%, var(--stone));font-family:var(--font-mono);font-size:13px">${s.artifact.dims}</text>
+        </svg>
+        <p class="cap">${s.artifact.note}</p>
+      </div>
+    </div>` : "";
+  return `
+    ${photoHtml(s)}
+    <div class="d-title">
+      <h3>${s.cn}</h3>
+      <span class="en">${s.en}</span>
+      <span class="hook">${s.hook}</span>
+    </div>
+    <div class="d-actions">
+      <button class="btn" data-act="prev-stop" aria-label="上一站">← 上一站</button>
+      <button class="btn" data-act="next-stop" aria-label="下一站">下一站 →</button>
+      <button class="btn primary" data-act="go-recite">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16M4 10h16M4 15h10"/><path d="M17 14v6M14 17h6"/></svg>
+        去背诵这一站
+      </button>
+      <button class="btn" data-act="cycle-mastery" data-m="${mastery[s.id]||0}">标记：${M_LABEL[mastery[s.id]||0]}</button>
+    </div>
+    <div class="facts">${facts}</div>
+    <div class="d-sec"><h4>讲解词 · 中英对照</h4>${paras}</div>
+    ${artifact}
+    <div class="d-sec"><h4>口试问答</h4><div class="qa">${qa}</div></div>
+    <p class="credits">实景图：<a href="${PAGE(s.imgFile)}" target="_blank" rel="noopener">${s.imgFile}</a> · Wikimedia Commons</p>`;
+}
+function renderDetail(){
+  const box = $("#ovDetail");
+  const s = STOPS.find(x=>x.id===currentStop);
+  if(!s){
+    box.innerHTML = `<div class="empty"><div class="empty-in">
+      <span class="big-seal" aria-hidden="true">宫</span>
+      <h3>从中轴开始一次讲解</h3>
+      <p>点选地图上的编号圆点，或从右侧路线列表选择站点，即可查看图文讲解词。</p>
+      <button class="btn primary" id="startWumen">从午门开始</button>
+    </div></div>`;
+    $("#startWumen").addEventListener("click", ()=>selectStop("wumen","overview"));
+    return;
+  }
+  box.innerHTML = `<div class="detail-body">${detailHtml(s)}</div>`;
+  box.querySelector('[data-act="go-recite"]').addEventListener("click", ()=>{ setMode("recite"); selectStop(s.id,"recite"); });
+  box.querySelector('[data-act="prev-stop"]').addEventListener("click", ()=>stepStop(-1));
+  box.querySelector('[data-act="next-stop"]').addEventListener("click", ()=>stepStop(1));
+  box.querySelector('[data-act="cycle-mastery"]').addEventListener("click", e=>{ cycleMastery(s.id, e.target); });
+}
+function stepStop(d){
+  const i = STOPS.findIndex(x=>x.id===currentStop);
+  if(i<0) return;
+  const ni = Math.min(STOPS.length-1, Math.max(0, i+d));
+  if(ni!==i) selectStop(STOPS[ni].id, mode);
+}
+function cycleMastery(id, btn){
+  const next = ((mastery[id]||0) + 1) % 3;
+  mastery[id] = next; saveMastery(); updateProgress(); refreshPins();
+  if(btn){ btn.dataset.m = next; btn.textContent = "标记：" + M_LABEL[next]; }
+  announce("已标记为" + M_LABEL[next]);
+}
+
+/* ══════════════════════════ 背诵模式 ══════════════════════════ */
+function renderRecite(){
+  const empty = $("#reciteEmpty"), body = $("#reciteBody");
+  const s = STOPS.find(x=>x.id===currentStop);
+  if(!s){ empty.style.display="flex"; body.style.display="none"; return; }
+  empty.style.display="none"; body.style.display="block";
+  const paras = s.paras.map((p,i)=>{
+    const enHtml = maskLevel==="blank"
+      ? `<button class="para-hide-btn" data-reveal-para="${i}">第 ${i+1} 段 · 点按显现英文</button><p class="en-src" style="display:none" lang="en"></p>`
+      : paraEnHtml(p, true);
+    return `<div class="para${maskLevel==="blank"?" hide-en":""}" data-pi="${i}">
+      <span class="pno num">${String(i+1).padStart(2,"0")}</span>
+      <div class="en">${enHtml}</div>
+      ${cnOn ? `<p class="cn">${p.cn}</p>` : ""}
+      <div class="para-tools">
+        <button class="icon-btn" data-read-para="${i}" aria-label="朗读第${i+1}段" title="朗读本段">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9.4 9.4 0 0 1 0 13"/></svg>
+        </button>
+      </div>
+    </div>`;
+  }).join("");
+  const m = mastery[s.id]||0;
+  body.innerHTML = `
+    <div class="rc-head">
+      <div class="top"><h3>${s.cn}</h3><span class="en">${s.en}</span></div>
+      <p class="sub">${s.hook} · 全站约 ${s.minutes} 分钟 · 当前档位：${
+        maskLevel==="full" ? "看全文" : maskLevel==="keys" ? "遮关键词" : "全遮背诵"}</p>
+    </div>
+    <div class="script">${paras}</div>
+    <div style="padding:0 22px 22px">
+      <button class="btn mastery-btn" data-m="${m}" id="masteryBtn" style="width:100%">标记本站：${M_LABEL[m]}</button>
+    </div>`;
+  $("#masteryBtn").addEventListener("click", e=>cycleMastery(s.id, e.currentTarget));
+  body.querySelectorAll("[data-read-para]").forEach(b=>b.addEventListener("click", ()=>readPara(s, +b.dataset.readPara)));
+  body.querySelectorAll(".kw-mask").forEach(el=>{
+    el.addEventListener("click", ()=>{ el.classList.add("revealed"); el.textContent = el.dataset.w; });
+    el.addEventListener("keydown", e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); el.click(); }});
+  });
+  body.querySelectorAll("[data-reveal-para]").forEach(b=>b.addEventListener("click", ()=>{
+    const para = b.closest(".para");
+    para.classList.remove("hide-en");
+    para.querySelector(".en").innerHTML = "<p class=\"en\" lang=\"en\">" + stripMarks(s.paras[+b.dataset.revealPara].en) + "</p>";
+    para.querySelectorAll(".kw-mask").forEach(el=>{
+      el.addEventListener("click", ()=>{ el.classList.add("revealed"); el.textContent = el.dataset.w; });
+      el.addEventListener("keydown", e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); el.click(); }});
+    });
+    b.remove();
+  }));
+}
+
+/* ══════════════════════════ 语音朗读 ══════════════════════════ */
+const synth = window.speechSynthesis;
+let voices = [];
+function loadVoices(){
+  if(!synth) return;
+  voices = synth.getVoices().filter(v=>/^en/i.test(v.lang));
+  const sel = $("#voiceSel");
+  sel.innerHTML = "";
+  if(!voices.length){ $("#ttsNote").classList.add("show"); return; }
+  voices.forEach(v=>{
+    const o = document.createElement("option");
+    o.value = v.name; o.textContent = `${v.name} (${v.lang})`;
+    sel.appendChild(o);
+  });
+  const saved = voiceName && voices.find(v=>v.name===voiceName) ? voiceName : (voices.find(v=>/Samantha|Google US|Aria|Natural/i.test(v.name))||voices[0]).name;
+  sel.value = saved; voiceName = saved;
+}
+if(synth){
+  loadVoices();
+  if(typeof synth.onvoiceschanged !== "undefined") synth.onvoiceschanged = loadVoices;
+} else { $("#ttsNote").classList.add("show"); }
+$("#rateRange").addEventListener("input", e=>{
+  rate = +e.target.value; $("#rateVal").textContent = rate.toFixed(2)+"×";
+  store.set("tts", {rate, voice:voiceName});
+});
+$("#voiceSel").addEventListener("change", e=>{
+  voiceName = e.target.value; store.set("tts", {rate, voice:voiceName});
+});
+$("#rateVal").textContent = rate.toFixed(2)+"×";
+$("#rateRange").value = rate;
+
+function plainPara(pi){
+  const s = STOPS.find(x=>x.id===currentStop);
+  if(!s) return "";
+  return stripMarks(s.paras[pi].en);
+}
+function speakText(text, paraEl, onend){
+  if(!synth){ $("#ttsNote").classList.add("show"); return; }
+  const u = new SpeechSynthesisUtterance(text);
+  const v = voices.find(v=>v.name===voiceName); if(v) u.voice = v;
+  u.lang = v ? v.lang : "en-US";
+  u.rate = rate; u.pitch = 1;
+  if(paraEl){ document.querySelectorAll(".para.speaking").forEach(p=>p.classList.remove("speaking")); paraEl.classList.add("speaking"); }
+  u.onend = ()=>{ if(paraEl) paraEl.classList.remove("speaking"); if(onend) onend(); };
+  u.onerror = ()=>{ if(paraEl) paraEl.classList.remove("speaking"); };
+  synth.speak(u);
+}
+function readPara(s, pi){
+  synth && synth.cancel();
+  const paraEl = document.querySelector(`#reciteBody .para[data-pi="${pi}"]`);
+  speakText(plainPara(pi), paraEl);
+}
+$("#playAllBtn").addEventListener("click", ()=>{
+  if(!currentStop){ announce("先选择一个站点"); return; }
+  if(!synth){ $("#ttsNote").classList.add("show"); return; }
+  synth.cancel();
+  const s = STOPS.find(x=>x.id===currentStop);
+  const total = s.paras.length;
+  let i = 0;
+  const next = ()=>{
+    if(i>=total){ speaking=false; return; }
+    const paraEl = document.querySelector(`#reciteBody .para[data-pi="${i}"]`);
+    const wasHidden = maskLevel==="blank" && paraEl && paraEl.classList.contains("hide-en");
+    if(wasHidden){ paraEl.classList.remove("hide-en"); const btn = paraEl.querySelector(".para-hide-btn"); if(btn) btn.remove(); paraEl.querySelector(".en").innerHTML = "<p class=\"en\" lang=\"en\">" + stripMarks(s.paras[i].en) + "</p>"; wireMask(paraEl); }
+    const idx = i++;
+    speakText(plainPara(idx), paraEl, next);
+  };
+  speaking = true; next();
+});
+$("#stopAudioBtn").addEventListener("click", ()=>{ synth && synth.cancel(); speaking=false; document.querySelectorAll(".para.speaking").forEach(p=>p.classList.remove("speaking")); });
+function wireMask(scope){
+  scope.querySelectorAll(".kw-mask").forEach(el=>{
+    el.addEventListener("click", ()=>{ el.classList.add("revealed"); el.textContent = el.dataset.w; });
+    el.addEventListener("keydown", e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); el.click(); }});
+  });
+}
+
+/* ══════════════════════════ 录音 ══════════════════════════ */
+let mediaStream = null, recorder = null, recChunks = [], recTimer = null, recStart = 0;
+let takes = [];   // {url, seconds, stopId}
+async function toggleRecord(){
+  const btn = $("#recBtn");
+  if(recorder && recorder.state === "recording"){
+    recorder.stop(); return;
+  }
+  if(!navigator.mediaDevices || !window.MediaRecorder){
+    showRecError("当前环境不支持录音","请使用较新版本的 Chrome、Edge 或 Safari 打开本页；若以 file:// 直接打开受限，可改用本地静态服务器访问。");
+    return;
+  }
+  try{
+    mediaStream = await navigator.mediaDevices.getUserMedia({audio:true});
+  }catch(err){
+    showRecError("无法访问麦克风", "浏览器提示权限被拒绝或设备不可用。请在浏览器地址栏授权麦克风后重试；不录音也可正常使用朗读与遮罩背诵。");
+    return;
+  }
+  hideRecError();
+  recChunks = [];
+  try{ recorder = new MediaRecorder(mediaStream); }
+  catch(e){ showRecError("录音初始化失败","当前浏览器不支持所需的音频编码。"); return; }
+  recorder.ondataavailable = e=>{ if(e.data.size) recChunks.push(e.data); };
+  recorder.onstop = ()=>{
+    const secs = Math.round((Date.now()-recStart)/1000);
+    const blob = new Blob(recChunks, {type: recorder.mimeType || "audio/webm"});
+    takes.unshift({ url: URL.createObjectURL(blob), seconds: secs, stopId: currentStop, name: STOPS.find(x=>x.id===currentStop)?.cn || "录音" });
+    renderTakes();
+    mediaStream.getTracks().forEach(t=>t.stop());
+    clearInterval(recTimer);
+    btn.classList.remove("recording"); btn.setAttribute("aria-pressed","false");
+    $("#recLabel").textContent = "开始录音"; $("#recTime").textContent = "00:00";
+  };
+  recorder.start();
+  recStart = Date.now();
+  btn.classList.add("recording"); btn.setAttribute("aria-pressed","true");
+  $("#recLabel").textContent = "停止录音";
+  recTimer = setInterval(()=>{
+    const s = Math.floor((Date.now()-recStart)/1000);
+    $("#recTime").textContent = String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");
+  }, 500);
+}
+function showRecError(title, detail){
+  const box = $("#recError");
+  box.innerHTML = `<div><b>${title}。</b>${detail}</div>`;
+  box.classList.add("show");
+}
+function hideRecError(){ $("#recError").classList.remove("show"); }
+function renderTakes(){
+  const box = $("#takes"); box.innerHTML = "";
+  takes.forEach((t,i)=>{
+    const row = document.createElement("div");
+    row.className = "take";
+    row.innerHTML = `
+      <button class="icon-btn" data-play="${i}" aria-label="播放录音">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg>
+      </button>
+      <span class="t-name">${t.name}</span>
+      <span class="t-len num">${String(Math.floor(t.seconds/60)).padStart(2,"0")}:${String(t.seconds%60).padStart(2,"0")}</span>
+      <button class="icon-btn del" data-del="${i}" aria-label="删除录音">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>
+      </button>`;
+    row.querySelector("[data-play]").addEventListener("click", ()=>{ synth && synth.cancel(); new Audio(t.url).play(); });
+    row.querySelector("[data-del]").addEventListener("click", ()=>{ URL.revokeObjectURL(t.url); takes.splice(i,1); renderTakes(); });
+    box.appendChild(row);
+  });
+  if(!takes.length) box.innerHTML = `<p class="rec-hint" style="margin:0">还没有录音。选好站点后按下「开始录音」，对着这一站的英文讲一遍试试。</p>`;
+}
+$("#recBtn").addEventListener("click", toggleRecord);
+renderTakes();
+
+/* ══════════════════════════ 工具条 ══════════════════════════ */
+$("#maskSeg").addEventListener("click", e=>{
+  const b = e.target.closest("button[data-lv]"); if(!b) return;
+  maskLevel = b.dataset.lv; revealed = {};
+  $("#maskSeg").querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed", x===b ? "true":"false"));
+  if(currentStop) renderRecite();
+});
+$("#cnToggle").addEventListener("click", e=>{
+  cnOn = !cnOn;
+  e.currentTarget.setAttribute("aria-pressed", cnOn ? "true":"false");
+  e.currentTarget.style.opacity = cnOn ? "1" : ".55";
+  if(currentStop && mode==="recite") renderRecite();
+});
+$("#revealAll").addEventListener("click", ()=>{
+  document.querySelectorAll("#reciteBody .kw-mask").forEach(el=>{ el.classList.add("revealed"); el.textContent = el.dataset.w; });
+  announce("关键词已全部显现");
+});
+
+/* ══════════════════════════ 模式切换 ══════════════════════════ */
+function setMode(m){
+  mode = m;
+  $("#viewOverview").classList.toggle("on", m==="overview");
+  $("#viewRecite").classList.toggle("on", m==="recite");
+  $("#btnOverview").setAttribute("aria-pressed", m==="overview" ? "true":"false");
+  $("#btnRecite").setAttribute("aria-pressed", m==="recite" ? "true":"false");
+  if(m==="recite"){
+    const nextIncomplete = STOPS.find(s=>mastery[s.id]!==2);
+    if(!currentStop && nextIncomplete) currentStop = nextIncomplete.id;
+    renderRecite();
+  }
+  if(m==="overview") renderDetail();
+  refreshPins();
+}
+$("#btnOverview").addEventListener("click", ()=>setMode("overview"));
+$("#btnRecite").addEventListener("click", ()=>setMode("recite"));
+
+/* 键盘：背诵模式下 ← → 切站点 */
+document.addEventListener("keydown", e=>{
+  if(mode!=="recite" || e.target.matches("input,select,textarea")) return;
+  if(e.key!=="ArrowLeft" && e.key!=="ArrowRight") return;
+  const idx = STOPS.findIndex(s=>s.id===currentStop);
+  const ni = e.key==="ArrowRight" ? Math.min(idx+1, STOPS.length-1) : Math.max(idx-1, 0);
+  if(idx===-1){ selectStop(STOPS[0].id,"recite"); return; }
+  selectStop(STOPS[ni].id,"recite");
+});
+
+/* ══════════════════════════ 启动 ══════════════════════════ */
+buildPins();
+buildStopLists();
+updateProgress();
+renderDetail();
+</script>
+</body>
+</html>
