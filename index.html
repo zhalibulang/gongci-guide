@@ -1,6 +1,6 @@
 <!doctype html>
 <!--
-  宫词 · 故宫英文导游词记忆站 V3
+  宫词 · 故宫英文导游词记忆站 V4
   Discovery:
     deliverable: 单文件静态学习站（Web 类 · desktop-first，移动端适配）
     audience: 备考北京市初级导游资格考试（英语现场讲解）的考生
@@ -8,7 +8,7 @@
     sections: 顶栏(模式切换+进度) / 纵览(中轴地图+路线列表+站点详情) / 背诵(遮罩+朗读+录音) / 页脚(来源与说明)
     accent: 宫墙红（导航与关键操作），琉璃金（装饰线索），无渐变
   内容依据：《北京导游服务能力——北京现场导游考试教材》（中英对照讲解）与用户校对稿整理。
-  图片：Wikimedia Commons（V2：CDN 直连缩略图 + Special:FilePath 二级回退 + 预连接）；V3：修复 iPad 竖屏背诵区溢出（整页横滚→模块内滚动），重排竖屏背诵导航与工具栏。
+  图片：Wikimedia Commons（V2：CDN 直连缩略图 + Special:FilePath 二级回退 + 预连接）；V4：统一播放器（播放/暂停/停止/切轨/快进退）、段落级录音、GitHub 数据托管与文件管理弹窗、录音权限复用、讲解词编辑模式。
 -->
 <html lang="zh-CN">
 <head>
@@ -107,7 +107,7 @@ p{margin:0}
 .brand-txt b{font-family:var(--font-display);font-size:19px;font-weight:700;letter-spacing:.02em}
 .brand-txt span{font-family:var(--font-mono);font-size:11px;letter-spacing:.09em;color:var(--muted)}
 .mode-switch{
-  margin-left:auto;display:flex;gap:4px;padding:4px;
+  display:flex;gap:4px;padding:4px;
   background:var(--surface);border:1px solid var(--border);border-radius:999px;
 }
 .mode-switch button{
@@ -405,6 +405,87 @@ p{margin:0}
 .rec-error.show{display:block}
 .rec-error b{color:var(--danger)}
 
+/* 段落工具：右侧固定宽 pill，不遮正文 */
+.script .para{padding-right:92px}
+.para-tools{right:0;top:16px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:3px}
+.para-tools.recording{border-color:var(--danger)}
+.para-tools.paused{border-color:var(--gold)}
+
+/* 统一播放器 */
+.player-bar{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.player-bar .icon-btn{width:38px;height:38px}
+.player-now{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-top:12px}
+.player-now b{font-size:14px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.player-now .num{color:var(--muted);font-size:12px;flex:none}
+.player-track{
+  height:6px;border-radius:999px;background:var(--surface-deep);
+  margin-top:10px;position:relative;cursor:pointer;
+}
+.player-track i{
+  position:absolute;left:0;top:0;bottom:0;width:0%;
+  background:var(--accent);border-radius:999px;
+}
+.player-track.disabled{cursor:default;background:var(--surface-deep)}
+
+/* 文件管理弹窗 */
+.modal-overlay{
+  position:fixed;inset:0;z-index:80;background:color-mix(in srgb, var(--ink) 45%, transparent);
+  display:grid;place-items:center;padding:20px;
+}
+.modal-overlay[hidden]{display:none}
+.modal{
+  width:min(640px, 100%);max-height:min(80vh, 720px);display:flex;flex-direction:column;
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);
+  box-shadow:0 18px 50px color-mix(in srgb, var(--ink) 30%, transparent);
+}
+.modal-hd{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border)}
+.modal-hd h3{margin:0;font-family:var(--font-display);font-size:19px}
+.modal-tabs{display:flex;gap:4px;padding:12px 20px 0}
+.modal-tabs button{
+  padding:8px 14px;border-radius:9px 9px 0 0;font-size:13.5px;font-weight:600;color:var(--muted);
+  border:1px solid transparent;border-bottom:0;
+}
+.modal-tabs button[aria-pressed="true"]{background:var(--bg);border-color:var(--border);color:var(--accent)}
+.modal-body{padding:16px 20px 22px;overflow-y:auto;border-top:1px solid var(--border)}
+.frow{
+  display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);flex-wrap:wrap;
+}
+.frow:last-child{border-bottom:0}
+.frow .f-main{display:flex;flex-direction:column;gap:1px;min-width:0;flex:1}
+.frow .f-name{font-size:14px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.frow .f-meta{font-size:11.5px;color:var(--muted);font-family:var(--font-mono)}
+.fstatus{font-size:11px;padding:3px 9px;border-radius:999px;border:1px solid var(--border);color:var(--muted);white-space:nowrap}
+.fstatus.up{background:var(--ok-soft);border-color:color-mix(in srgb,var(--ok) 35%,transparent);color:var(--ok)}
+.fempty{padding:26px 0;text-align:center;color:var(--muted);font-size:14px}
+.gh-form{display:flex;flex-direction:column;gap:12px}
+.gh-form .field label{font-size:12.5px;color:var(--muted)}
+.gh-form input{
+  width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:9px;
+  background:var(--bg);color:var(--ink);font:inherit;font-size:14px;
+}
+.gh-note{font-size:12px;color:var(--muted);line-height:1.7;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 12px}
+.modal-note-ok{color:var(--ok)}
+
+/* 编辑模式 */
+.btn-ghost-top{
+  display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border-radius:999px;
+  font-size:13.5px;font-weight:600;color:var(--muted);
+  border:1px solid var(--border);background:var(--surface);
+  transition:color var(--motion) var(--ease),border-color var(--motion) var(--ease);
+}
+.btn-ghost-top:hover{color:var(--ink);border-color:var(--muted)}
+.btn-ghost-top[aria-pressed="true"]{color:#fdf7ea;background:var(--accent);border-color:var(--accent)}
+.edit-lbl{font-size:11px;font-family:var(--font-mono);letter-spacing:.1em;color:var(--muted);text-transform:uppercase;margin-top:2px}
+.edit-area{
+  width:100%;min-height:88px;resize:vertical;
+  border:1px solid var(--border);border-radius:10px;background:var(--bg);color:var(--ink);
+  font-family:var(--font-script);font-size:15.5px;line-height:1.65;padding:12px 14px;
+}
+.edit-area[data-lang="cn"]{font-family:var(--font-body);font-size:14px}
+.edit-area:focus{outline:none;border-color:var(--accent);box-shadow:var(--ring)}
+.edit-para{padding-right:0!important}
+.edit-actions{display:flex;gap:10px;flex-wrap:wrap;padding:0 22px 22px}
+
 /* 通知条 */
 .toast{
   position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(8px);
@@ -492,6 +573,10 @@ p{margin:0}
     </div>
     <div class="progress-chip" title="已掌握站点 / 全部站点">
       <span>已掌握</span><b class="num" id="progNum">0</b><span class="num">/ 11</span>
+    </div>
+    <div style="display:flex;gap:8px;margin-left:auto">
+      <button class="btn-ghost-top" id="btnFiles">文件管理</button>
+      <button class="btn-ghost-top" id="btnEdit" aria-pressed="false">编辑内容</button>
     </div>
     <nav class="mode-switch" aria-label="模式切换">
       <button id="btnOverview" aria-pressed="true">
@@ -604,14 +689,43 @@ p{margin:0}
           <ul class="stop-list" id="reciteStops"></ul>
         </div>
         <div class="panel rec-card" data-od-id="recorder">
-          <div class="panel-hd" style="padding:0 0 12px;border-bottom:0"><h2>录音跟读</h2></div>
+          <div class="panel-hd" style="padding:0 0 12px;border-bottom:0">
+            <h2>录音与播放</h2><span class="meta" id="playerState">就绪</span>
+          </div>
+          <div class="player-bar" role="group" aria-label="播放器控制">
+            <button class="icon-btn" id="btnPrevTrack" aria-label="上一段" title="上一段">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 5v14L8 12z"/><path d="M6 5v14"/></svg>
+            </button>
+            <button class="icon-btn" id="btnSeekBack" aria-label="快退5秒" title="快退 5 秒">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 5 11l6 6"/><path d="M5 11h9a5 5 0 0 1 0 10h-3"/></svg>
+            </button>
+            <button class="icon-btn primary-btn" id="btnPlayPause" aria-label="播放或暂停" title="播放 / 暂停">
+              <svg id="icPlay" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4.5v15l13-7.5z"/></svg>
+              <svg id="icPause" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M8 5v14M16 5v14"/></svg>
+            </button>
+            <button class="icon-btn" id="btnStop" aria-label="停止" title="停止">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="1.5"/></svg>
+            </button>
+            <button class="icon-btn" id="btnSeekFwd" aria-label="快进5秒" title="快进 5 秒">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 5l6 6-6 6"/><path d="M19 11h-9a5 5 0 0 0 0 10h3"/></svg>
+            </button>
+            <button class="icon-btn" id="btnNextTrack" aria-label="下一段" title="下一段">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 5v14l10-7z"/><path d="M18 5v14"/></svg>
+            </button>
+          </div>
+          <div class="player-now">
+            <b id="playerTitle">未选择轨道</b>
+            <span class="num" id="playerTime">--:--</span>
+          </div>
+          <div class="player-track disabled" id="playerTrack" title="录音可点按跳转"><i id="playerFill"></i></div>
+          <p class="rec-hint">播放队列 = 当前站点的朗读段落 + 你的录音。段落旁的麦克风按钮可直接录音，录完自动进入队列。</p>
           <div class="rec-top">
             <button class="rec-btn" id="recBtn" aria-pressed="false">
-              <span class="dot" aria-hidden="true"></span><span id="recLabel">开始录音</span>
+              <span class="dot" aria-hidden="true"></span><span id="recLabel">录制整站讲解</span>
             </button>
+            <button class="btn" id="recDone" style="display:none">完成并保存</button>
             <span class="rec-time num" id="recTime">00:00</span>
           </div>
-          <p class="rec-hint">先听系统朗读，再录下自己的版本，回放比对重音与停顿。录音仅本次浏览会话内有效。</p>
           <div class="rec-error" id="recError" role="alert"></div>
           <div class="takes" id="takes"></div>
         </div>
@@ -667,6 +781,23 @@ p{margin:0}
   </div>
 </footer>
 
+<div class="modal-overlay" id="filesModal" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-label="文件与数据管理">
+    <div class="modal-hd">
+      <h3>文件与数据管理</h3>
+      <button class="icon-btn" id="modalClose" aria-label="关闭">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="modal-tabs" role="tablist">
+      <button data-mtab="recs" aria-pressed="true">录音文件</button>
+      <button data-mtab="data" aria-pressed="false">讲解词数据</button>
+      <button data-mtab="gh" aria-pressed="false">GitHub 设置</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
 <div class="toast num" id="toast" role="status" aria-live="polite"></div>
 
 <script>
@@ -675,7 +806,7 @@ p{margin:0}
 const IMG = f => "https://commons.wikimedia.org/wiki/Special:FilePath/" + encodeURIComponent(f) + "?width=1280";
 const PAGE = f => "https://commons.wikimedia.org/wiki/File:" + encodeURIComponent(f);
 
-const STOPS = [
+let STOPS = [
 {
   id:"wumen", n:"01", cn:"午门", en:"The Meridian Gate",
   hook:"故宫正门 · 五凤楼 · 紫禁城概况", minutes:4,
@@ -884,6 +1015,16 @@ const STOPS = [
 }
 ];
 
+const DEFAULT_DATA = JSON.parse(JSON.stringify(STOPS));
+function applyEdits(edits){
+  if(!edits) return;
+  for(const sid in edits){
+    const stop = STOPS.find(s=>s.id===sid); if(!stop) continue;
+    const e = edits[sid];
+    (e.paras||[]).forEach((pe,i)=>{ if(stop.paras[i] && pe) stop.paras[i] = pe; });
+  }
+}
+
 /* ══════════════════════════ 状态 ══════════════════════════ */
 const $ = s => document.querySelector(s);
 const store = {
@@ -987,6 +1128,7 @@ function paraEnHtml(p, recite){
 function selectStop(id, targetMode){
   currentStop = id;
   revealed = {};
+  player.build(id);
   if(targetMode==="recite" && mode!=="recite"){ setMode("recite"); }
   refreshPins();
   if(mode==="overview") renderDetail();
@@ -1085,7 +1227,14 @@ function renderRecite(){
   const s = STOPS.find(x=>x.id===currentStop);
   if(!s){ empty.style.display="flex"; body.style.display="none"; return; }
   empty.style.display="none"; body.style.display="block";
-  const paras = s.paras.map((p,i)=>{
+  const paras = editMode ? s.paras.map((p,i)=>`
+    <div class="para edit-para" data-pi="${i}">
+      <span class="pno num">${String(i+1).padStart(2,"0")}</span>
+      <label class="edit-lbl">English 讲解词（自动保留背诵关键词）</label>
+      <textarea class="edit-area" data-pi="${i}" data-lang="en">${stripMarks(p.en)}</textarea>
+      <label class="edit-lbl">中文对照</label>
+      <textarea class="edit-area" data-pi="${i}" data-lang="cn">${p.cn}</textarea>
+    </div>`).join("") : s.paras.map((p,i)=>{
     const enHtml = maskLevel==="blank"
       ? `<button class="para-hide-btn" data-reveal-para="${i}">第 ${i+1} 段 · 点按显现英文</button><p class="en-src" style="display:none" lang="en"></p>`
       : paraEnHtml(p, true);
@@ -1093,9 +1242,12 @@ function renderRecite(){
       <span class="pno num">${String(i+1).padStart(2,"0")}</span>
       <div class="en">${enHtml}</div>
       ${cnOn ? `<p class="cn">${p.cn}</p>` : ""}
-      <div class="para-tools">
+      <div class="para-tools" data-pt="${i}">
         <button class="icon-btn" data-read-para="${i}" aria-label="朗读第${i+1}段" title="朗读本段">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9.4 9.4 0 0 1 0 13"/></svg>
+        </button>
+        <button class="icon-btn" data-rec-para="${i}" aria-label="录制第${i+1}段" title="录制本段（再按暂停）">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/></svg>
         </button>
       </div>
     </div>`;
@@ -1108,11 +1260,21 @@ function renderRecite(){
         maskLevel==="full" ? "看全文" : maskLevel==="keys" ? "遮关键词" : "全遮背诵"}</p>
     </div>
     <div class="script">${paras}</div>
-    <div style="padding:0 22px 22px">
-      <button class="btn mastery-btn" data-m="${m}" id="masteryBtn" style="width:100%">标记本站：${M_LABEL[m]}</button>
-    </div>`;
-  $("#masteryBtn").addEventListener("click", e=>cycleMastery(s.id, e.currentTarget));
+    ${editMode ? `<div class="edit-actions">
+        <button class="btn primary" id="saveEditsBtn">保存本站修改</button>
+        <button class="btn" id="resetContentBtn">恢复全部默认讲解词</button>
+      </div>`
+    : `<div style="padding:0 22px 22px">
+        <button class="btn mastery-btn" data-m="${m}" id="masteryBtn" style="width:100%">标记本站：${M_LABEL[m]}</button>
+      </div>`}`;
+  if(editMode){
+    $("#saveEditsBtn").addEventListener("click", ()=>saveStopEdits(s.id));
+    $("#resetContentBtn").addEventListener("click", resetContent);
+  } else {
+    $("#masteryBtn").addEventListener("click", e=>cycleMastery(s.id, e.currentTarget));
+  }
   body.querySelectorAll("[data-read-para]").forEach(b=>b.addEventListener("click", ()=>readPara(s, +b.dataset.readPara)));
+  body.querySelectorAll("[data-rec-para]").forEach(b=>b.addEventListener("click", ()=>recToggle({kind:"para", pi:+b.dataset.recPara})));
   body.querySelectorAll(".kw-mask").forEach(el=>{
     el.addEventListener("click", ()=>{ el.classList.add("revealed"); el.textContent = el.dataset.w; });
     el.addEventListener("keydown", e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); el.click(); }});
@@ -1177,28 +1339,17 @@ function speakText(text, paraEl, onend){
   synth.speak(u);
 }
 function readPara(s, pi){
-  synth && synth.cancel();
+  player.stop();
   const paraEl = document.querySelector(`#reciteBody .para[data-pi="${pi}"]`);
   speakText(plainPara(pi), paraEl);
 }
 $("#playAllBtn").addEventListener("click", ()=>{
   if(!currentStop){ announce("先选择一个站点"); return; }
   if(!synth){ $("#ttsNote").classList.add("show"); return; }
-  synth.cancel();
-  const s = STOPS.find(x=>x.id===currentStop);
-  const total = s.paras.length;
-  let i = 0;
-  const next = ()=>{
-    if(i>=total){ speaking=false; return; }
-    const paraEl = document.querySelector(`#reciteBody .para[data-pi="${i}"]`);
-    const wasHidden = maskLevel==="blank" && paraEl && paraEl.classList.contains("hide-en");
-    if(wasHidden){ paraEl.classList.remove("hide-en"); const btn = paraEl.querySelector(".para-hide-btn"); if(btn) btn.remove(); paraEl.querySelector(".en").innerHTML = "<p class=\"en\" lang=\"en\">" + stripMarks(s.paras[i].en) + "</p>"; wireMask(paraEl); }
-    const idx = i++;
-    speakText(plainPara(idx), paraEl, next);
-  };
-  speaking = true; next();
+  if(player.stopId!==currentStop || !player.queue.length) player.build(currentStop, true);
+  player.playAt(0);
 });
-$("#stopAudioBtn").addEventListener("click", ()=>{ synth && synth.cancel(); speaking=false; document.querySelectorAll(".para.speaking").forEach(p=>p.classList.remove("speaking")); });
+$("#stopAudioBtn").addEventListener("click", ()=>player.stop());
 function wireMask(scope){
   scope.querySelectorAll(".kw-mask").forEach(el=>{
     el.addEventListener("click", ()=>{ el.classList.add("revealed"); el.textContent = el.dataset.w; });
@@ -1206,47 +1357,85 @@ function wireMask(scope){
   });
 }
 
-/* ══════════════════════════ 录音 ══════════════════════════ */
-let mediaStream = null, recorder = null, recChunks = [], recTimer = null, recStart = 0;
-let takes = [];   // {url, seconds, stopId}
-async function toggleRecord(){
-  const btn = $("#recBtn");
-  if(recorder && recorder.state === "recording"){
-    recorder.stop(); return;
-  }
-  if(!navigator.mediaDevices || !window.MediaRecorder){
-    showRecError("当前环境不支持录音","请使用较新版本的 Chrome、Edge 或 Safari 打开本页；若以 file:// 直接打开受限，可改用本地静态服务器访问。");
-    return;
-  }
-  try{
-    mediaStream = await navigator.mediaDevices.getUserMedia({audio:true});
-  }catch(err){
-    showRecError("无法访问麦克风", "浏览器提示权限被拒绝或设备不可用。请在浏览器地址栏授权麦克风后重试；不录音也可正常使用朗读与遮罩背诵。");
+/* ══════════════════════════ 录音（权限一次授权，音频流复用） ══════════════════════════ */
+const MIC_SVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/></svg>`;
+const PAUSE_SVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M8 5v14M16 5v14"/></svg>`;
+const PLAY_SVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4.5v15l13-7.5z"/></svg>`;
+let mediaStream = null, recorder = null, recChunks = [], recTimer = null;
+let recState = "idle";           // idle | recording | paused
+let recScope = {kind:"stop"};    // {kind:"stop"} | {kind:"para", pi}
+let recStart = 0, recPauseAcc = 0, recPauseAt = 0;
+let takes = [];                  // {id, url, blob, seconds, stopId, name, uploaded}
+
+async function ensureStream(){
+  const live = mediaStream && mediaStream.getAudioTracks().some(t=>t.readyState==="live");
+  if(live) return mediaStream;   // 已授权：直接复用音频流，不再重复弹权限
+  if(!navigator.mediaDevices || !window.MediaRecorder) throw new Error("unsupported");
+  mediaStream = await navigator.mediaDevices.getUserMedia({audio:true});
+  return mediaStream;
+}
+async function recToggle(scope){
+  if(recState==="recording"){ recPause(); return; }
+  if(recState==="paused"){ recResume(); return; }
+  try{ await ensureStream(); }
+  catch(err){
+    if(err.message==="unsupported") showRecError("当前环境不支持录音","请使用较新版本的 Chrome、Edge 或 Safari 打开本页。");
+    else showRecError("无法访问麦克风","权限被拒绝或设备不可用。请在浏览器设置里允许本页使用麦克风；授权一次后不会再询问。");
     return;
   }
   hideRecError();
   recChunks = [];
   try{ recorder = new MediaRecorder(mediaStream); }
   catch(e){ showRecError("录音初始化失败","当前浏览器不支持所需的音频编码。"); return; }
+  recScope = scope || {kind:"stop"};
   recorder.ondataavailable = e=>{ if(e.data.size) recChunks.push(e.data); };
-  recorder.onstop = ()=>{
-    const secs = Math.round((Date.now()-recStart)/1000);
-    const blob = new Blob(recChunks, {type: recorder.mimeType || "audio/webm"});
-    takes.unshift({ url: URL.createObjectURL(blob), seconds: secs, stopId: currentStop, name: STOPS.find(x=>x.id===currentStop)?.cn || "录音" });
-    renderTakes();
-    mediaStream.getTracks().forEach(t=>t.stop());
-    clearInterval(recTimer);
-    btn.classList.remove("recording"); btn.setAttribute("aria-pressed","false");
-    $("#recLabel").textContent = "开始录音"; $("#recTime").textContent = "00:00";
-  };
+  recorder.onstop = saveRecording;
   recorder.start();
-  recStart = Date.now();
-  btn.classList.add("recording"); btn.setAttribute("aria-pressed","true");
-  $("#recLabel").textContent = "停止录音";
-  recTimer = setInterval(()=>{
-    const s = Math.floor((Date.now()-recStart)/1000);
-    $("#recTime").textContent = String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");
-  }, 500);
+  recState = "recording"; recStart = Date.now(); recPauseAcc = 0;
+  recTimer = setInterval(tickRecTime, 500);
+  updateRecButtons();
+}
+function recPause(){ if(recorder && recorder.state==="recording"){ recorder.pause(); recPauseAt = Date.now(); recState = "paused"; updateRecButtons(); } }
+function recResume(){ if(recorder && recorder.state==="paused"){ recorder.resume(); recPauseAcc += Date.now()-recPauseAt; recState = "recording"; updateRecButtons(); } }
+function recFinish(){ if(recorder && recorder.state!=="inactive"){ recorder.stop(); } }
+function recElapsed(){
+  const now = recState==="paused" ? recPauseAt : Date.now();
+  return Math.max(0, Math.floor((now - recStart - recPauseAcc)/1000));
+}
+function tickRecTime(){ $("#recTime").textContent = fmtTime(recElapsed()); }
+function saveRecording(){
+  clearInterval(recTimer);
+  const secs = Math.max(1, recElapsed());
+  const blob = new Blob(recChunks, {type: (recorder && recorder.mimeType) || "audio/webm"});
+  const s = STOPS.find(x=>x.id===currentStop);
+  takes.unshift({
+    id: "t"+Date.now(), url: URL.createObjectURL(blob), blob, seconds: secs,
+    stopId: currentStop || "unknown",
+    name: (s?s.cn:"录音") + (recScope.kind==="para" ? ` · 第${recScope.pi+1}段` : " · 整站"),
+    uploaded: false
+  });
+  recState = "idle"; recorder = null;
+  renderTakes();
+  if(mode==="recite" && currentStop) player.build(currentStop, true);
+  updateRecButtons();
+  announce("录音已保存：可播放、下载或上传");
+}
+function updateRecButtons(){
+  const lbl = $("#recLabel");
+  $("#recBtn").classList.toggle("recording", recState==="recording");
+  $("#recBtn").setAttribute("aria-pressed", recState!=="idle" ? "true" : "false");
+  lbl.textContent = recState==="idle" ? "录制整站讲解" : recState==="recording" ? "暂停录音" : "继续录音";
+  $("#recDone").style.display = recState==="idle" ? "none" : "";
+  $("#recTime").textContent = recState==="idle" ? "00:00" : fmtTime(recElapsed());
+  const on = recScope.kind==="para" && recState!=="idle";
+  document.querySelectorAll(".para-tools").forEach(pt=>{
+    pt.classList.toggle("recording", on && recState==="recording");
+    pt.classList.toggle("paused", on && recState==="paused");
+  });
+  document.querySelectorAll("[data-rec-para]").forEach(b=>{
+    if(on) b.innerHTML = recState==="recording" ? PAUSE_SVG : PLAY_SVG;
+    else b.innerHTML = MIC_SVG;
+  });
 }
 function showRecError(title, detail){
   const box = $("#recError");
@@ -1256,25 +1445,53 @@ function showRecError(title, detail){
 function hideRecError(){ $("#recError").classList.remove("show"); }
 function renderTakes(){
   const box = $("#takes"); box.innerHTML = "";
-  takes.forEach((t,i)=>{
+  if(!takes.length){
+    box.innerHTML = `<p class="rec-hint" style="margin:0">还没有录音。选中站点后按段落旁的麦克风，或点上方「录制整站讲解」。录音在本会话内可随时下载，上传 GitHub 后长期保存。</p>`;
+    return;
+  }
+  takes.forEach(t=>{
     const row = document.createElement("div");
     row.className = "take";
     row.innerHTML = `
-      <button class="icon-btn" data-play="${i}" aria-label="播放录音">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg>
+      <button class="icon-btn" data-play="${t.id}" aria-label="播放录音" title="播放">${PLAY_SVG}</button>
+      <span class="f-main"><span class="f-name">${t.name}</span><span class="f-meta">${fmtTime(t.seconds)} · ${t.stopId}</span></span>
+      <span class="fstatus${t.uploaded?" up":""}">${t.uploaded?"已上传":"本地"}</span>
+      <button class="icon-btn" data-up="${t.id}" aria-label="上传到 GitHub" title="上传到 GitHub">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V6"/><path d="M6 12l6-6 6 6"/><path d="M5 21h14"/></svg>
       </button>
-      <span class="t-name">${t.name}</span>
-      <span class="t-len num">${String(Math.floor(t.seconds/60)).padStart(2,"0")}:${String(t.seconds%60).padStart(2,"0")}</span>
-      <button class="icon-btn del" data-del="${i}" aria-label="删除录音">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>
+      <button class="icon-btn del" data-del="${t.id}" aria-label="删除录音" title="删除">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>
       </button>`;
-    row.querySelector("[data-play]").addEventListener("click", ()=>{ synth && synth.cancel(); new Audio(t.url).play(); });
-    row.querySelector("[data-del]").addEventListener("click", ()=>{ URL.revokeObjectURL(t.url); takes.splice(i,1); renderTakes(); });
+    row.querySelector("[data-play]").addEventListener("click", ()=>player.playTake(t.id));
+    row.querySelector("[data-up]").addEventListener("click", ()=>uploadTake(t.id));
+    row.querySelector("[data-del]").addEventListener("click", ()=>{
+      URL.revokeObjectURL(t.url);
+      takes = takes.filter(x=>x.id!==t.id);
+      renderTakes();
+      if(mode==="recite" && currentStop) player.build(currentStop, true);
+    });
     box.appendChild(row);
   });
-  if(!takes.length) box.innerHTML = `<p class="rec-hint" style="margin:0">还没有录音。选好站点后按下「开始录音」，对着这一站的英文讲一遍试试。</p>`;
 }
-$("#recBtn").addEventListener("click", toggleRecord);
+async function uploadTake(id){
+  const t = takes.find(x=>x.id===id); if(!t) return;
+  if(!gh.cfg().token){ announce("先在「文件管理 → GitHub 设置」保存授权码"); openFilesModal("gh"); return; }
+  const btn = document.querySelector(`[data-up="${id}"]`); if(btn) btn.disabled = true;
+  try{
+    const path = `recordings/${t.stopId}-${t.id}.webm`;
+    const b64 = await gh.b64FromBlob(t.blob);
+    await gh.putFile(path, b64, `上传录音 ${t.name}`);
+    t.uploaded = true;
+    t.ghPath = path;
+    const {repo, branch} = gh.cfg();
+    t.rawUrl = `https://raw.githubusercontent.com/${repo}/${branch}/${path}`;
+    renderTakes(); announce("录音已上传到 GitHub");
+  }catch(e){
+    showRecError("上传失败", e.message + "。请检查「文件管理 → GitHub 设置」里的授权码与仓库名。");
+  }finally{ if(btn) btn.disabled = false; }
+}
+$("#recBtn").addEventListener("click", ()=>recToggle({kind:"stop"}));
+$("#recDone").addEventListener("click", recFinish);
 renderTakes();
 
 /* ══════════════════════════ 工具条 ══════════════════════════ */
@@ -1323,11 +1540,330 @@ document.addEventListener("keydown", e=>{
   selectStop(STOPS[ni].id,"recite");
 });
 
+/* ══════════════════════════ 播放器（朗读段落 + 录音统一队列） ══════════════════════════ */
+function fmtTime(s){ s = Math.max(0, Math.round(s)); return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0"); }
+const player = {
+  queue: [], idx: -1, playing: false, paused: false, audio: null, stopId: null,
+  build(stopId, force){
+    if(!force && this.stopId===stopId && this.queue.length){ return; }
+    this.hardStop(false);
+    this.stopId = stopId;
+    const s = STOPS.find(x=>x.id===stopId); if(!s){ this.queue = []; return; }
+    this.queue = s.paras.map((p,i)=>({type:"tts", stopId, pi:i, label:`第 ${i+1} 段 · 朗读`}));
+    takes.filter(t=>t.stopId===stopId).forEach(t=>this.queue.push({type:"rec", takeId:t.id, label:`${t.name} · 录音`, take:t}));
+    updatePlayerUI();
+  },
+  playAt(i){
+    if(!this.queue.length){ announce("先选择一个站点"); return; }
+    this.idx = Math.max(0, Math.min(i, this.queue.length-1));
+    const tr = this.queue[this.idx];
+    this.current = tr;
+    if(tr.type==="tts") this.playTTS(tr); else this.playRec(tr);
+    this.playing = true; this.paused = false;
+    updatePlayerUI();
+  },
+  playTTS(tr){
+    if(this.audio) this.audio.pause();
+    synth && synth.cancel();
+    const s = STOPS.find(x=>x.id===tr.stopId);
+    let paraEl = document.querySelector(`#reciteBody .para[data-pi="${tr.pi}"]`);
+    if(paraEl && paraEl.classList.contains("hide-en")){
+      paraEl.classList.remove("hide-en");
+      const hb = paraEl.querySelector(".para-hide-btn"); if(hb) hb.remove();
+      paraEl.querySelector(".en").innerHTML = "<p class=\"en\" lang=\"en\">" + stripMarks(s.paras[tr.pi].en) + "</p>";
+      wireMask(paraEl);
+    }
+    speakText(stripMarks(s.paras[tr.pi].en), paraEl, ()=>this.autoNext());
+  },
+  playRec(tr){
+    synth && synth.cancel();
+    const t = takes.find(x=>x.id===tr.takeId);
+    if(!t){ this.autoNext(); return; }
+    if(!this.audio) this.audio = new Audio();
+    this.audio.pause();
+    this.audio.src = t.url;
+    const self = this;
+    this.audio.onended = ()=>{ self.playing = false; self.autoNext(); };
+    this.audio.ontimeupdate = ()=>updatePlayerUI();
+    this.audio.play();
+  },
+  playAll(){ if(!this.queue.length){ announce("先选择一个站点"); return; } this.playAt(0); },
+  playTake(id){
+    if(this.stopId!==currentStop) this.build(currentStop, true);
+    let i = this.queue.findIndex(t=>t.type==="rec" && t.takeId===id);
+    if(i<0){ this.build(currentStop, true); i = this.queue.findIndex(t=>t.type==="rec" && t.takeId===id); }
+    if(i>=0) this.playAt(i);
+  },
+  toggle(){
+    if(!this.queue.length){ this.playAll(); return; }
+    if(this.playing && !this.paused){
+      if(this.current && this.current.type==="rec" && this.audio){ this.audio.pause(); }
+      else if(synth){ synth.pause(); }
+      this.paused = true;
+    } else if(this.paused){
+      if(this.current && this.current.type==="rec" && this.audio){ this.audio.play(); }
+      else if(synth){ synth.resume(); }
+      this.paused = false;
+    } else {
+      this.playAt(this.idx>=0 ? this.idx : 0);
+    }
+    updatePlayerUI();
+  },
+  stop(){ this.hardStop(true); },
+  hardStop(ui){
+    synth && synth.cancel();
+    if(this.audio){ this.audio.pause(); if(this.audio.src) this.audio.currentTime = 0; }
+    this.playing = false; this.paused = false; this.idx = -1; this.current = null;
+    document.querySelectorAll(".para.speaking").forEach(p=>p.classList.remove("speaking"));
+    if(ui) updatePlayerUI();
+  },
+  next(){ if(this.idx < this.queue.length-1) this.playAt(this.idx+1); else announce("已是队列最后一段"); },
+  prev(){ if(this.idx > 0) this.playAt(this.idx-1); else announce("已是队列第一段"); },
+  seek(delta){
+    if(this.current && this.current.type==="rec" && this.audio && this.audio.duration){
+      this.audio.currentTime = Math.max(0, Math.min(this.audio.duration-0.2, this.audio.currentTime+delta));
+      updatePlayerUI(); return;
+    }
+    if(delta>0) this.next();
+    else { const tr = this.queue[this.idx]; if(tr && tr.type==="tts") this.playAt(this.idx); else this.prev(); }
+  },
+  autoNext(){
+    if(this.idx < this.queue.length-1){ this.playAt(this.idx+1); }
+    else { this.playing = false; this.paused = false; this.idx = -1; this.current = null; updatePlayerUI(); }
+  }
+};
+function updatePlayerUI(){
+  const tr = player.queue[player.idx];
+  $("#playerTitle").textContent = tr ? tr.label : (player.stopId ? "队列就绪 · 按播放开始" : "未选择轨道");
+  const showPause = player.playing && !player.paused;
+  $("#icPlay").style.display = showPause ? "none" : "";
+  $("#icPause").style.display = showPause ? "" : "none";
+  $("#playerState").textContent = player.paused ? "已暂停" : player.playing ? "播放中" : "就绪";
+  let timeStr = "--:--", pct = 0;
+  if(tr && tr.type==="rec" && player.audio && player.audio.duration){
+    timeStr = fmtTime(player.audio.currentTime)+" / "+fmtTime(player.audio.duration);
+    pct = player.audio.currentTime/player.audio.duration*100;
+  } else if(tr && tr.type==="tts"){
+    const s = STOPS.find(x=>x.id===tr.stopId);
+    timeStr = `段落 ${tr.pi+1} / ${s?s.paras.length:0}`;
+    pct = s ? ((tr.pi+1)/s.paras.length)*100 : 0;
+  }
+  $("#playerTime").textContent = timeStr;
+  $("#playerFill").style.width = Math.min(100, pct)+"%";
+  const track = $("#playerTrack");
+  if(tr && tr.type==="rec") track.classList.remove("disabled"); else track.classList.add("disabled");
+}
+$("#btnPlayPause").addEventListener("click", ()=>player.toggle());
+$("#btnStop").addEventListener("click", ()=>player.stop());
+$("#btnNextTrack").addEventListener("click", ()=>player.next());
+$("#btnPrevTrack").addEventListener("click", ()=>player.prev());
+$("#btnSeekFwd").addEventListener("click", ()=>player.seek(5));
+$("#btnSeekBack").addEventListener("click", ()=>player.seek(-5));
+$("#playerTrack").addEventListener("click", e=>{
+  const tr = player.queue[player.idx];
+  if(!tr || tr.type!=="rec" || !player.audio || !player.audio.duration) return;
+  const rect = e.currentTarget.getBoundingClientRect();
+  player.audio.currentTime = (e.clientX-rect.left)/rect.width * player.audio.duration;
+});
+
+/* ══════════════════════════ GitHub 数据托管 ══════════════════════════ */
+const gh = {
+  cfg(){ return { token: store.get("ghToken",""), repo: store.get("ghRepo","zhalibulang/gongci-guide"), branch: store.get("ghBranch","main") }; },
+  saveCfg(token, repo, branch){ store.set("ghToken", token.trim()); store.set("ghRepo", repo.trim()||"zhalibulang/gongci-guide"); store.set("ghBranch", branch.trim()||"main"); },
+  async api(path, opts={}){
+    const {token} = this.cfg();
+    if(!token) throw new Error("尚未保存授权码");
+    const res = await fetch("https://api.github.com"+path, Object.assign({}, opts, {
+      headers: Object.assign({Authorization:"Bearer "+token, Accept:"application/vnd.github+json"}, opts.headers||{})
+    }));
+    if(!res.ok){
+      let msg = res.status+" "+res.statusText;
+      try{ const j = await res.json(); if(j.message) msg = j.message; }catch(e){}
+      throw new Error(msg);
+    }
+    return res;
+  },
+  async putFile(path, contentB64, message){
+    const {repo, branch} = this.cfg();
+    let sha = null;
+    try{ const j = await (await this.api(`/repos/${repo}/contents/${path}?ref=${branch}`)).json(); sha = j.sha; }catch(e){}
+    const body = {message, content: contentB64, branch};
+    if(sha) body.sha = sha;
+    return (await this.api(`/repos/${repo}/contents/${path}`, {method:"PUT", body: JSON.stringify(body)})).json();
+  },
+  async deleteFile(path, sha){
+    const {repo, branch} = this.cfg();
+    await this.api(`/repos/${repo}/contents/${path}`, {method:"DELETE", body: JSON.stringify({message:"删除站点文件", sha, branch})});
+  },
+  async listDir(dir){
+    const {repo, branch} = this.cfg();
+    const j = await (await this.api(`/repos/${repo}/contents/${dir}?ref=${branch}`)).json();
+    return Array.isArray(j) ? j : [];
+  },
+  b64FromBlob(blob){ return new Promise(res=>{ const fr = new FileReader(); fr.onload = ()=>res(fr.result.split(",")[1]); fr.readAsDataURL(blob); }); }
+};
+
+/* ══════════════════════════ 文件管理弹窗 ══════════════════════════ */
+let modalTab = "recs";
+function openFilesModal(tab){ if(tab) modalTab = tab; $("#filesModal").hidden = false; renderModal(); }
+function closeFilesModal(){ $("#filesModal").hidden = true; }
+function renderModal(){
+  document.querySelectorAll("[data-mtab]").forEach(b=>b.setAttribute("aria-pressed", b.dataset.mtab===modalTab ? "true" : "false"));
+  const body = $("#modalBody");
+  if(modalTab==="recs"){
+    let html = "";
+    if(!takes.length) html += `<p class="fempty">本次会话还没有录音。选中站点后按段落旁的麦克风按钮即可录音；录音上传到 GitHub 后可长期保存。</p>`;
+    takes.forEach(t=>{
+      html += `<div class="frow">
+        <span class="f-main"><span class="f-name">${t.name}</span><span class="f-meta">${fmtTime(t.seconds)} · ${t.stopId}</span></span>
+        <span class="fstatus${t.uploaded?" up":""}">${t.uploaded?"已上传":"本地"}</span>
+        <button class="btn" data-m-down="${t.id}">下载</button>
+        ${t.uploaded?"":`<button class="btn" data-m-up="${t.id}">上传</button>`}
+        <button class="btn" data-m-del="${t.id}">删除</button>
+      </div>`;
+    });
+    const c = gh.cfg();
+    html += `<div class="frow"><span class="f-main"><span class="f-name">GitHub 仓库中的录音</span><span class="f-meta" id="ghRepoListMeta">${c.token ? "加载中…" : "未配置授权码，请在「GitHub 设置」里保存"}</span></span></div><div id="ghRepoList"></div>`;
+    body.innerHTML = html;
+    body.querySelectorAll("[data-m-down]").forEach(b=>b.addEventListener("click", ()=>{
+      const t = takes.find(x=>x.id===b.dataset.mDown); if(!t) return;
+      const a = document.createElement("a"); a.href = t.url; a.download = `gongci-${t.stopId}-${t.id}.webm`; a.click();
+    }));
+    body.querySelectorAll("[data-m-up]").forEach(b=>b.addEventListener("click", async ()=>{
+      await uploadTake(b.dataset.mUp); renderModal();
+    }));
+    body.querySelectorAll("[data-m-del]").forEach(b=>b.addEventListener("click", ()=>{
+      const t = takes.find(x=>x.id===b.dataset.mDel);
+      if(t){ URL.revokeObjectURL(t.url); takes = takes.filter(x=>x.id!==t.id); }
+      renderModal();
+      if(mode==="recite" && currentStop) player.build(currentStop, true);
+    }));
+    if(c.token){
+      gh.listDir("recordings").then(items=>{
+        const box = body.querySelector("#ghRepoList");
+        const meta = body.querySelector("#ghRepoListMeta");
+        if(meta) meta.textContent = `recordings/ 目录 · ${items.length} 个文件`;
+        if(!box) return;
+        if(!items.length){ box.innerHTML = `<p class="fempty">仓库里还没有录音文件</p>`; return; }
+        box.innerHTML = items.map(it=>`<div class="frow">
+          <span class="f-main"><span class="f-name">${it.name}</span><span class="f-meta">${Math.max(1, Math.round(it.size/1024))} KB</span></span>
+          <a class="btn" href="${it.download_url}" target="_blank" rel="noopener">下载</a>
+          <button class="btn" data-gh-del="${it.sha}" data-gh-path="${it.path}">删除</button>
+        </div>`).join("");
+        box.querySelectorAll("[data-gh-del]").forEach(b=>b.addEventListener("click", async ()=>{
+          b.disabled = true;
+          try{ await gh.deleteFile(b.dataset.ghPath, b.dataset.ghDel); announce("已从仓库删除"); renderModal(); }
+          catch(e){ announce("删除失败：" + e.message); b.disabled = false; }
+        }));
+      }).catch(e=>{
+        const box = body.querySelector("#ghRepoList");
+        if(box) box.innerHTML = `<p class="fempty">仓库读取失败：${e.message}</p>`;
+      });
+    }
+  } else if(modalTab==="data"){
+    const edits = store.get("contentEdits", null) || {};
+    const n = Object.keys(edits).length;
+    body.innerHTML = `
+      <p class="rec-hint">讲解词修改保存在本机浏览器。可导出 JSON 备份，或上传到 GitHub 仓库的 data/content-edits.json。</p>
+      <div class="frow">
+        <span class="f-main"><span class="f-name">讲解词修改</span><span class="f-meta">${n ? n+" 个站点有修改" : "暂无修改，均为默认内容"}</span></span>
+        <button class="btn" id="expEdits">下载 JSON</button>
+        <button class="btn" id="upEdits">上传到 GitHub</button>
+        <button class="btn" id="resetEdits">恢复默认</button>
+      </div>`;
+    $("#expEdits").addEventListener("click", ()=>{
+      const blob = new Blob([JSON.stringify(edits, null, 2)], {type:"application/json"});
+      const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "gongci-content-edits.json"; a.click();
+    });
+    $("#upEdits").addEventListener("click", async ()=>{
+      try{
+        const b64 = await gh.b64FromBlob(new Blob([JSON.stringify(edits)], {type:"application/json"}));
+        await gh.putFile("data/content-edits.json", b64, "备份讲解词修改");
+        announce("讲解词数据已上传到 GitHub");
+      }catch(e){ announce("上传失败：" + e.message); }
+    });
+    let armed = false;
+    $("#resetEdits").addEventListener("click", e=>{
+      if(!armed){ armed = true; e.target.textContent = "确认恢复？再点一次"; return; }
+      resetContent(); renderModal();
+    });
+  } else {
+    const c = gh.cfg();
+    body.innerHTML = `
+      <div class="gh-form">
+        <div class="field"><label>GitHub 授权码（token）</label>
+          <input id="ghTokenIn" type="password" autocomplete="off" placeholder="github_pat_… 或 ghp_…" value="${c.token.replace(/"/g,"&quot;")}"></div>
+        <div class="field"><label>仓库（owner/name）</label>
+          <input id="ghRepoIn" type="text" value="${c.repo}"></div>
+        <div class="field"><label>分支</label>
+          <input id="ghBranchIn" type="text" value="${c.branch}"></div>
+        <button class="btn primary" id="ghSave">保存设置</button>
+        <p class="gh-note">建议使用 Fine-grained token：GitHub → Settings → Developer settings → Fine-grained tokens，只选择你的 gongci-guide 仓库，权限设为 Contents: Read and write。授权码只保存在这台设备的浏览器里，不进入网页源码，也不会发送到 GitHub API 之外的任何地方。录音上传到仓库 recordings/ 目录，讲解词数据上传到 data/。</p>
+      </div>`;
+    $("#ghSave").addEventListener("click", ()=>{
+      gh.saveCfg($("#ghTokenIn").value, $("#ghRepoIn").value, $("#ghBranchIn").value);
+      announce("GitHub 设置已保存到本机");
+    });
+  }
+}
+document.querySelectorAll("[data-mtab]").forEach(b=>b.addEventListener("click", ()=>{ modalTab = b.dataset.mtab; renderModal(); }));
+
+/* ══════════════════════════ 编辑模式 ══════════════════════════ */
+let editMode = false;
+function toggleEdit(){
+  editMode = !editMode;
+  $("#btnEdit").setAttribute("aria-pressed", editMode ? "true" : "false");
+  if(editMode){ if(mode!=="recite") setMode("recite"); else renderRecite(); }
+  else { renderRecite(); announce("已退出编辑模式"); }
+}
+function rebuildMarks(oldEn, newPlain){
+  const words = [...oldEn.matchAll(/<m>([\s\S]*?)<\/m>/g)].map(m=>m[1]);
+  let t = newPlain;
+  words.forEach(w=>{
+    const i = t.indexOf(w);
+    if(i>=0) t = t.slice(0,i) + "<m>" + w + "</m>" + t.slice(i + w.length);
+  });
+  return t;
+}
+function saveStopEdits(sid){
+  const stop = STOPS.find(x=>x.id===sid); if(!stop) return;
+  const edits = store.get("contentEdits", {}) || {};
+  const eStop = edits[sid] = edits[sid] || {paras:[]};
+  document.querySelectorAll(`#reciteBody .edit-area[data-pi]`).forEach(a=>{
+    const i = +a.dataset.pi;
+    if(!stop.paras[i]) return;
+    if(a.dataset.lang==="en"){
+      const after = rebuildMarks(stop.paras[i].en, a.value);
+      stop.paras[i].en = after;
+      eStop.paras[i] = Object.assign({}, eStop.paras[i]||{}, {en: after});
+    } else {
+      stop.paras[i].cn = a.value;
+      eStop.paras[i] = Object.assign({}, eStop.paras[i]||{}, {cn: a.value});
+    }
+  });
+  store.set("contentEdits", edits);
+  announce("本站讲解词已保存（本机浏览器）");
+  renderRecite();
+}
+function resetContent(){
+  store.set("contentEdits", null);
+  STOPS = JSON.parse(JSON.stringify(DEFAULT_DATA));
+  announce("已恢复默认讲解词");
+  buildStopLists(); refreshPins(); renderRecite();
+}
+
 /* ══════════════════════════ 启动 ══════════════════════════ */
+applyEdits(store.get("contentEdits", null));
 buildPins();
 buildStopLists();
 updateProgress();
 renderDetail();
+$("#btnFiles").addEventListener("click", ()=>openFilesModal());
+$("#btnEdit").addEventListener("click", toggleEdit);
+$("#modalClose").addEventListener("click", closeFilesModal);
+$("#filesModal").addEventListener("click", e=>{ if(e.target===e.currentTarget) closeFilesModal(); });
+document.addEventListener("keydown", e=>{ if(e.key==="Escape" && !$("#filesModal").hidden) closeFilesModal(); });
+window.addEventListener("beforeunload", ()=>{ if(mediaStream) mediaStream.getTracks().forEach(t=>t.stop()); });
 </script>
 </body>
 </html>
